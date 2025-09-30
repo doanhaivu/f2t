@@ -3,6 +3,7 @@
 ## Relevant Files
 
 - `src/types/index.ts` - Core TypeScript types for User, Farm, Product, Order models
+- `src/types/constants.ts` - Order status constants and all enum-like values with English labels
 - `src/types/api.ts` - API request/response type definitions
 - `src/api/auth/index.ts` - Extended authentication API functions for farm/consumer registration
 - `src/api/farms/index.ts` - Farm management API functions (CRUD operations)
@@ -42,14 +43,16 @@
 
 ## Tasks
 
-- [ ] 1.0 Setup Core Data Models & API Foundation
-  - [ ] 1.1 Create TypeScript interfaces for User, Farm, Product, Order in `src/types/index.ts`
-  - [ ] 1.2 Define API request/response types in `src/types/api.ts`
-  - [ ] 1.3 Create order status constants and enums
-  - [ ] 1.4 Define location and address type definitions
-  - [ ] 1.5 Setup product category constants (vegetables, fruits, etc.)
+- [x] 1.0 Setup Core Data Models & API Foundation
+
+  - [x] 1.1 Create TypeScript interfaces for User, Farm, Product, Order in `src/types/index.ts`
+  - [x] 1.2 Define API request/response types in `src/types/api.ts`
+  - [x] 1.3 Create order status constants and enums
+  - [x] 1.4 Define location and address type definitions
+  - [x] 1.5 Setup product category constants (vegetables, fruits, etc.)
 
 - [ ] 2.0 Extend Authentication System for Farm/Consumer Registration
+
   - [ ] 2.1 Extend existing auth types to include user roles (consumer/farm)
   - [ ] 2.2 Create farm registration API functions in `src/api/auth/index.ts`
   - [ ] 2.3 Build farm registration form component with business info fields
@@ -59,6 +62,7 @@
   - [ ] 2.7 Create role-based route protection for farm features
 
 - [ ] 3.0 Implement Farm Management System
+
   - [ ] 3.1 Create farm API functions (create, read, update) in `src/api/farms/index.ts`
   - [ ] 3.2 Build farm profile display card component
   - [ ] 3.3 Create farm profile edit form with location picker
@@ -67,6 +71,7 @@
   - [ ] 3.6 Create farm dashboard for managing products and orders
 
 - [ ] 4.0 Build Product Catalog & Management
+
   - [ ] 4.1 Create product API functions (CRUD, search, filter) in `src/api/products/index.ts`
   - [ ] 4.2 Build product card component with harvest time display
   - [ ] 4.3 Create product creation/edit form for farms
@@ -76,6 +81,7 @@
   - [ ] 4.7 Create product availability status indicators
 
 - [ ] 5.0 Develop Shopping Cart & Order System
+
   - [ ] 5.1 Create cart state management with Zustand store
   - [ ] 5.2 Build cart item component with quantity controls
   - [ ] 5.3 Implement cart summary with total calculation
@@ -85,6 +91,7 @@
   - [ ] 5.7 Add cart persistence using MMKV storage
 
 - [ ] 6.0 Create Location & Search Features
+
   - [ ] 6.1 Create location service hook for GPS and distance calculation
   - [ ] 6.2 Build search bar component with real-time filtering
   - [ ] 6.3 Implement filter modal for products (category, price, location)
@@ -93,6 +100,7 @@
   - [ ] 6.6 Implement location permission handling
 
 - [ ] 7.0 Build Order Management & Status Tracking
+
   - [ ] 7.1 Create order tracking API functions in `src/api/orders/index.ts`
   - [ ] 7.2 Build order status timeline component
   - [ ] 7.3 Implement order history screen at `src/app/orders/index.tsx`
