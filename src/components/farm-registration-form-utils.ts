@@ -1,6 +1,54 @@
-import type { FarmRegistrationFormType } from './farm-registration-form';
 import type { FarmRegisterRequest } from '@/api/auth';
 import { USER_ROLE } from '@/types/constants';
+
+import type { FarmRegistrationFormType } from './farm-registration-form';
+
+// Helper function to create address object from form data
+const createAddressFromForm = (formData: FarmRegistrationFormType) => ({
+  street: formData.street,
+  streetNumber: formData.streetNumber,
+  city: formData.city,
+  state: formData.state,
+  zipCode: formData.zipCode,
+  country: formData.country,
+  formattedAddress: `${formData.streetNumber ? formData.streetNumber + ' ' : ''}${formData.street}, ${formData.city}, ${formData.state} ${formData.zipCode}, ${formData.country}`,
+});
+
+// Helper function to create location object
+const createLocationFromForm = (formData: FarmRegistrationFormType) => ({
+  coordinates: {
+    latitude: 0, // Will be filled by geolocation later
+    longitude: 0, // Will be filled by geolocation later
+  },
+  address: createAddressFromForm(formData),
+});
+
+// Helper function to extract user data from form
+const extractUserData = (formData: FarmRegistrationFormType) => ({
+  email: formData.email,
+  password: formData.password,
+  firstName: formData.firstName,
+  lastName: formData.lastName,
+  phoneNumber: formData.phoneNumber,
+  role: USER_ROLE.FARM,
+  location: createLocationFromForm(formData),
+});
+
+// Helper function to extract farm info from form
+const extractFarmInfo = (formData: FarmRegistrationFormType) => ({
+  name: formData.farmName,
+  description: formData.farmDescription,
+  location: createLocationFromForm(formData),
+  contactEmail: formData.farmContactEmail,
+  contactPhone: formData.farmContactPhone,
+  deliveryMethods: formData.deliveryMethods as (
+    | 'pickup'
+    | 'farm_delivery'
+    | 'both'
+  )[],
+  deliveryRadius: formData.deliveryRadius,
+  deliveryFee: formData.deliveryFee,
+});
 
 /**
  * Transform farm registration form data to API request format
@@ -8,93 +56,20 @@ import { USER_ROLE } from '@/types/constants';
 export const transformFormDataToApiRequest = (
   formData: FarmRegistrationFormType
 ): FarmRegisterRequest => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    phoneNumber,
-    farmName,
-    farmDescription,
-    farmContactEmail,
-    farmContactPhone,
-    street,
-    streetNumber,
-    city,
-    state,
-    zipCode,
-    country,
-    deliveryMethods,
-    deliveryRadius,
-    deliveryFee,
-    businessLicense,
-    farmingArea,
-    isOrganic,
-    acceptTerms,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    confirmPassword, // We don't need this in the API request
-  } = formData;
-
   return {
-    // User registration data
-    email,
-    password,
-    firstName,
-    lastName,
-    phoneNumber,
-    role: USER_ROLE.FARM,
-    location: {
-      coordinates: {
-        latitude: 0, // Will be filled by geolocation later
-        longitude: 0, // Will be filled by geolocation later
-      },
-      address: {
-        street,
-        streetNumber,
-        city,
-        state,
-        zipCode,
-        country,
-        formattedAddress: `${streetNumber ? streetNumber + ' ' : ''}${street}, ${city}, ${state} ${zipCode}, ${country}`,
-      },
-    },
-
-    // Farm-specific data
-    farmInfo: {
-      name: farmName,
-      description: farmDescription,
-      location: {
-        coordinates: {
-          latitude: 0, // Will be filled by geolocation later
-          longitude: 0, // Will be filled by geolocation later
-        },
-        address: {
-          street,
-          streetNumber,
-          city,
-          state,
-          zipCode,
-          country,
-          formattedAddress: `${streetNumber ? streetNumber + ' ' : ''}${street}, ${city}, ${state} ${zipCode}, ${country}`,
-        },
-      },
-      contactEmail: farmContactEmail,
-      contactPhone: farmContactPhone,
-      deliveryMethods: deliveryMethods as ('pickup' | 'farm_delivery' | 'both')[],
-      deliveryRadius,
-      deliveryFee,
-    },
-
-    // Business information
-    acceptTerms,
-    businessLicense,
+    ...extractUserData(formData),
+    farmInfo: extractFarmInfo(formData),
+    acceptTerms: formData.acceptTerms,
+    businessLicense: formData.businessLicense,
   };
 };
 
 /**
  * Validate required fields before submission
  */
-export const validateFormData = (formData: FarmRegistrationFormType): string[] => {
+export const validateFormData = (
+  formData: FarmRegistrationFormType
+): string[] => {
   const errors: string[] = [];
 
   // Check required personal fields
@@ -106,9 +81,12 @@ export const validateFormData = (formData: FarmRegistrationFormType): string[] =
 
   // Check required farm fields
   if (!formData.farmName?.trim()) errors.push('Farm name is required');
-  if (!formData.farmDescription?.trim()) errors.push('Farm description is required');
-  if (!formData.farmContactEmail?.trim()) errors.push('Farm contact email is required');
-  if (!formData.farmContactPhone?.trim()) errors.push('Farm contact phone is required');
+  if (!formData.farmDescription?.trim())
+    errors.push('Farm description is required');
+  if (!formData.farmContactEmail?.trim())
+    errors.push('Farm contact email is required');
+  if (!formData.farmContactPhone?.trim())
+    errors.push('Farm contact phone is required');
 
   // Check required location fields
   if (!formData.street?.trim()) errors.push('Street address is required');
@@ -118,12 +96,16 @@ export const validateFormData = (formData: FarmRegistrationFormType): string[] =
   if (!formData.country?.trim()) errors.push('Country is required');
 
   // Check business fields
-  if (!formData.deliveryMethods?.length) errors.push('At least one delivery method is required');
-  if (!formData.deliveryRadius || formData.deliveryRadius <= 0) errors.push('Valid delivery radius is required');
-  if (formData.deliveryFee === undefined || formData.deliveryFee < 0) errors.push('Valid delivery fee is required');
+  if (!formData.deliveryMethods?.length)
+    errors.push('At least one delivery method is required');
+  if (!formData.deliveryRadius || formData.deliveryRadius <= 0)
+    errors.push('Valid delivery radius is required');
+  if (formData.deliveryFee === undefined || formData.deliveryFee < 0)
+    errors.push('Valid delivery fee is required');
 
   // Check terms acceptance
-  if (!formData.acceptTerms) errors.push('You must accept the terms and conditions');
+  if (!formData.acceptTerms)
+    errors.push('You must accept the terms and conditions');
 
   // Check password confirmation
   if (formData.password !== formData.confirmPassword) {

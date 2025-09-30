@@ -16,7 +16,7 @@
 - `src/components/farm-registration-form.tsx` - Farm registration form component with business info fields
 - `src/components/farm-registration-form-utils.ts` - Form utilities and validation helpers
 - `src/components/phone-verification.tsx` - Phone number verification component with resend timer
-- `src/components/email-verification.tsx` - Email verification component with resend functionality  
+- `src/components/email-verification.tsx` - Email verification component with resend functionality
 - `src/components/verification-flow.tsx` - Multi-step verification flow orchestrator
 - `src/app/verification.tsx` - Verification screen for post-registration flow
 - `src/app/register.tsx` - Registration choice screen for consumer vs farm selection
@@ -73,7 +73,7 @@
   - [x] 1.4 Define location and address type definitions
   - [x] 1.5 Setup product category constants (vegetables, fruits, etc.)
 
-- [ ] 2.0 Extend Authentication System for Farm/Consumer Registration
+- [x] 2.0 Extend Authentication System for Farm/Consumer Registration
 
   - [x] 2.1 Extend existing auth types to include user roles (consumer/farm)
   - [x] 2.2 Create farm registration API functions in `src/api/auth/index.ts`

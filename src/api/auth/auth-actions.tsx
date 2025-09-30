@@ -1,15 +1,24 @@
-import { signIn, signOut, updateUser, updateFarm } from '@/lib/auth';
+import { signIn, signOut, updateFarm, updateUser } from '@/lib/auth';
+import type { AuthFarmData, AuthUserData } from '@/lib/auth/utils';
 import { DEFAULT_PERMISSIONS } from '@/types/constants';
-import type { AuthResponse, FarmRegisterRequest, RegisterRequest, LoginRequest } from './types';
-import type { AuthUserData, AuthFarmData } from '@/lib/auth/utils';
+
+import type {
+  AuthResponse,
+  FarmRegisterRequest,
+  LoginRequest,
+  RegisterRequest,
+} from './types';
 
 /**
  * Helper function to process auth response and sign in user
  */
-export const processAuthResponse = async (response: AuthResponse, farmData?: AuthFarmData) => {
+export const processAuthResponse = async (
+  response: AuthResponse,
+  farmData?: AuthFarmData
+) => {
   if (response.success && response.data) {
     const { user: userData, accessToken, refreshToken } = response.data;
-    
+
     // Create AuthUserData with default permissions based on role
     const authUser: AuthUserData = {
       ...userData,
@@ -44,13 +53,13 @@ export const handleRegistrationSuccess = async (
 ) => {
   // Extract farm data from response if it's a farm registration
   let farmData: AuthFarmData | undefined;
-  
+
   if ('farmInfo' in registrationData && response.data?.farm) {
     farmData = response.data.farm;
   }
-  
+
   const user = await processAuthResponse(response, farmData);
-  
+
   // For farm registration, we might want to trigger additional setup
   if ('farmInfo' in registrationData) {
     console.log('Farm registration completed for:', user.email);
@@ -67,22 +76,22 @@ export const handleRegistrationSuccess = async (
  */
 export const handleLoginSuccess = async (
   response: AuthResponse,
-  loginData: LoginRequest
+  _loginData: LoginRequest
 ) => {
   // Extract farm data from response if user is a farm owner
   let farmData: AuthFarmData | undefined;
-  
+
   if (response.data?.user?.role === 'farm' && response.data?.farm) {
     farmData = response.data.farm;
   }
-  
+
   const user = await processAuthResponse(response, farmData);
   console.log('User logged in:', user.email);
-  
+
   if (farmData) {
     console.log('Farm data loaded:', farmData.name);
   }
-  
+
   return user;
 };
 
@@ -102,7 +111,7 @@ export const updateVerificationStatus = async (
   verified: boolean
 ) => {
   const updates: Partial<AuthUserData> = {};
-  
+
   if (type === 'email') {
     updates.emailVerified = verified;
   } else if (type === 'phone') {
@@ -123,7 +132,9 @@ export const updateFarmInfo = async (updates: Partial<AuthFarmData>) => {
 /**
  * Helper function to check if user needs verification
  */
-export const needsVerification = (user: AuthUserData | null): {
+export const needsVerification = (
+  user: AuthUserData | null
+): {
   needsEmail: boolean;
   needsPhone: boolean;
   needsAny: boolean;
@@ -142,7 +153,9 @@ export const needsVerification = (user: AuthUserData | null): {
 /**
  * Helper function to validate farm registration data
  */
-export const validateFarmRegistration = (data: FarmRegisterRequest): string[] => {
+export const validateFarmRegistration = (
+  data: FarmRegisterRequest
+): string[] => {
   const errors: string[] = [];
 
   // Basic user validation
@@ -191,7 +204,9 @@ export const validateFarmRegistration = (data: FarmRegisterRequest): string[] =>
 /**
  * Helper function to validate consumer registration data
  */
-export const validateConsumerRegistration = (data: RegisterRequest): string[] => {
+export const validateConsumerRegistration = (
+  data: RegisterRequest
+): string[] => {
   const errors: string[] = [];
 
   if (!data.email || !data.email.includes('@')) {
