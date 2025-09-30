@@ -35,6 +35,16 @@
 - `src/app/(app)/farm-dashboard.tsx` - Example farm dashboard with route protection
 - `src/components/auth/route-guard.test.tsx` - Test suite for route protection components
 - `src/lib/hooks/use-auth-permissions.test.tsx` - Test suite for permission hooks
+- `src/api/farms/index.tsx` - Main farm API export file with CRUD operations and utilities
+- `src/api/farms/types.tsx` - Farm API request/response types and business logic types
+- `src/api/farms/use-create-farm.tsx` - Farm creation mutation hook
+- `src/api/farms/use-get-farm.tsx` - Single farm retrieval query hook
+- `src/api/farms/use-get-farms.tsx` - Farm list and search query hooks with pagination
+- `src/api/farms/use-update-farm.tsx` - Farm update mutation hook
+- `src/api/farms/use-delete-farm.tsx` - Farm deletion mutation hook
+- `src/api/farms/use-update-business-hours.tsx` - Business hours management hook
+- `src/api/farms/use-update-delivery-zones.tsx` - Delivery zones management hook
+- `src/api/farms/use-farm-analytics.tsx` - Farm analytics and reporting hook
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -85,7 +95,7 @@
 
 - [ ] 3.0 Implement Farm Management System
 
-  - [ ] 3.1 Create farm API functions (create, read, update) in `src/api/farms/index.ts`
+  - [x] 3.1 Create farm API functions (create, read, update) in `src/api/farms/index.ts`
   - [ ] 3.2 Build farm profile display card component
   - [ ] 3.3 Create farm profile edit form with location picker
   - [ ] 3.4 Implement farm profile screen at `src/app/farms/[id].tsx`
