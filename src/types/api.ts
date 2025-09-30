@@ -36,6 +36,7 @@ export type AuthResponse = ApiResponse<{
   user: User;
   accessToken: string;
   refreshToken: string;
+  farm?: Farm; // Optional farm data for farm users
 }>;
 
 export type RefreshTokenRequest = {

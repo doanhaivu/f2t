@@ -6,13 +6,35 @@
 - `src/types/constants.ts` - Order status constants and all enum-like values with English labels
 - `src/types/api.ts` - API request/response type definitions
 - `src/api/auth/index.ts` - Extended authentication API functions for farm/consumer registration
+- `src/api/auth/` - Complete auth API with React Query Kit hooks and helper functions
 - `src/api/farms/index.ts` - Farm management API functions (CRUD operations)
 - `src/api/products/index.ts` - Product catalog API functions with search/filter
 - `src/api/orders/index.ts` - Order management API functions with status tracking
 - `src/api/location/index.ts` - Location services for distance calculation
 - `src/lib/hooks/use-location.tsx` - Custom hook for location services
 - `src/lib/validation/index.ts` - Form validation schemas for all forms
-- `src/components/auth/farm-registration-form.tsx` - Farm registration form component
+- `src/components/farm-registration-form.tsx` - Farm registration form component with business info fields
+- `src/components/farm-registration-form-utils.ts` - Form utilities and validation helpers
+- `src/components/phone-verification.tsx` - Phone number verification component with resend timer
+- `src/components/email-verification.tsx` - Email verification component with resend functionality  
+- `src/components/verification-flow.tsx` - Multi-step verification flow orchestrator
+- `src/app/verification.tsx` - Verification screen for post-registration flow
+- `src/app/register.tsx` - Registration choice screen for consumer vs farm selection
+- `src/app/farms/register.tsx` - Farm registration screen with complete form integration
+- `src/app/farms/_layout.tsx` - Layout configuration for farm-related screens
+- `src/lib/auth/utils.tsx` - Enhanced auth utilities with farm data types and storage
+- `src/lib/auth/index.tsx` - Updated auth store with farm state management
+- `src/api/auth/auth-actions.tsx` - Enhanced auth actions for farm registration and login
+- `src/lib/auth/enhanced-auth.test.tsx` - Test suite for farm-specific auth functionality
+- `src/components/auth/route-guard.tsx` - Generic route protection component with role and permission checking
+- `src/components/auth/farm-route-guard.tsx` - Farm-specific route protection component
+- `src/components/auth/consumer-route-guard.tsx` - Consumer-specific route protection component
+- `src/components/auth/with-auth.tsx` - Higher-order components for route protection
+- `src/components/auth/index.tsx` - Auth components export file
+- `src/lib/hooks/use-auth-permissions.tsx` - Permission checking hooks for components
+- `src/app/(app)/farm-dashboard.tsx` - Example farm dashboard with route protection
+- `src/components/auth/route-guard.test.tsx` - Test suite for route protection components
+- `src/lib/hooks/use-auth-permissions.test.tsx` - Test suite for permission hooks
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -53,13 +75,13 @@
 
 - [ ] 2.0 Extend Authentication System for Farm/Consumer Registration
 
-  - [ ] 2.1 Extend existing auth types to include user roles (consumer/farm)
-  - [ ] 2.2 Create farm registration API functions in `src/api/auth/index.ts`
-  - [ ] 2.3 Build farm registration form component with business info fields
-  - [ ] 2.4 Add phone number verification to existing registration flow
-  - [ ] 2.5 Create farm registration screen at `src/app/farms/register.tsx`
-  - [ ] 2.6 Update auth store to handle farm-specific user data
-  - [ ] 2.7 Create role-based route protection for farm features
+  - [x] 2.1 Extend existing auth types to include user roles (consumer/farm)
+  - [x] 2.2 Create farm registration API functions in `src/api/auth/index.ts`
+  - [x] 2.3 Build farm registration form component with business info fields
+  - [x] 2.4 Add phone number verification to existing registration flow
+  - [x] 2.5 Create farm registration screen at `src/app/farms/register.tsx`
+  - [x] 2.6 Update auth store to handle farm-specific user data
+  - [x] 2.7 Create role-based route protection for farm features
 
 - [ ] 3.0 Implement Farm Management System
 

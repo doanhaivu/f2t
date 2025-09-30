@@ -605,10 +605,78 @@ export const BUSINESS_RULES = {
   REFUND_PROCESSING_TIME: 3 * 24 * 60 * 60 * 1000, // 3 days in milliseconds
 } as const;
 
+// Permission Constants for Role-Based Access Control
+export const PERMISSIONS = {
+  // Consumer permissions
+  BROWSE_PRODUCTS: 'browse_products',
+  PLACE_ORDERS: 'place_orders',
+  VIEW_ORDER_HISTORY: 'view_order_history',
+  MANAGE_PROFILE: 'manage_profile',
+  LEAVE_REVIEWS: 'leave_reviews',
+
+  // Farm permissions
+  MANAGE_FARM_PROFILE: 'manage_farm_profile',
+  CREATE_PRODUCTS: 'create_products',
+  EDIT_PRODUCTS: 'edit_products',
+  DELETE_PRODUCTS: 'delete_products',
+  MANAGE_ORDERS: 'manage_orders',
+  UPDATE_ORDER_STATUS: 'update_order_status',
+  VIEW_ANALYTICS: 'view_analytics',
+  MANAGE_DELIVERY_ZONES: 'manage_delivery_zones',
+
+  // Admin permissions (for future use)
+  ADMIN_ACCESS: 'admin_access',
+  MODERATE_CONTENT: 'moderate_content',
+  MANAGE_USERS: 'manage_users',
+} as const;
+
+export const PERMISSION_LABELS = {
+  [PERMISSIONS.BROWSE_PRODUCTS]: 'Browse Products',
+  [PERMISSIONS.PLACE_ORDERS]: 'Place Orders',
+  [PERMISSIONS.VIEW_ORDER_HISTORY]: 'View Order History',
+  [PERMISSIONS.MANAGE_PROFILE]: 'Manage Profile',
+  [PERMISSIONS.LEAVE_REVIEWS]: 'Leave Reviews',
+  [PERMISSIONS.MANAGE_FARM_PROFILE]: 'Manage Farm Profile',
+  [PERMISSIONS.CREATE_PRODUCTS]: 'Create Products',
+  [PERMISSIONS.EDIT_PRODUCTS]: 'Edit Products',
+  [PERMISSIONS.DELETE_PRODUCTS]: 'Delete Products',
+  [PERMISSIONS.MANAGE_ORDERS]: 'Manage Orders',
+  [PERMISSIONS.UPDATE_ORDER_STATUS]: 'Update Order Status',
+  [PERMISSIONS.VIEW_ANALYTICS]: 'View Analytics',
+  [PERMISSIONS.MANAGE_DELIVERY_ZONES]: 'Manage Delivery Zones',
+  [PERMISSIONS.ADMIN_ACCESS]: 'Admin Access',
+  [PERMISSIONS.MODERATE_CONTENT]: 'Moderate Content',
+  [PERMISSIONS.MANAGE_USERS]: 'Manage Users',
+} as const;
+
+// Default permissions by role
+export const DEFAULT_PERMISSIONS = {
+  [USER_ROLE.CONSUMER]: [
+    PERMISSIONS.BROWSE_PRODUCTS,
+    PERMISSIONS.PLACE_ORDERS,
+    PERMISSIONS.VIEW_ORDER_HISTORY,
+    PERMISSIONS.MANAGE_PROFILE,
+    PERMISSIONS.LEAVE_REVIEWS,
+  ],
+  [USER_ROLE.FARM]: [
+    PERMISSIONS.BROWSE_PRODUCTS,
+    PERMISSIONS.MANAGE_FARM_PROFILE,
+    PERMISSIONS.CREATE_PRODUCTS,
+    PERMISSIONS.EDIT_PRODUCTS,
+    PERMISSIONS.DELETE_PRODUCTS,
+    PERMISSIONS.MANAGE_ORDERS,
+    PERMISSIONS.UPDATE_ORDER_STATUS,
+    PERMISSIONS.VIEW_ANALYTICS,
+    PERMISSIONS.MANAGE_DELIVERY_ZONES,
+    PERMISSIONS.MANAGE_PROFILE,
+  ],
+} as const;
+
 // Feature Flags (for future use)
 export const FEATURE_FLAGS = {
   ENABLE_NOTIFICATIONS: true,
   ENABLE_ANALYTICS: false,
   ENABLE_REVIEWS: false,
   ENABLE_SUBSCRIPTIONS: false,
+  ENABLE_ADMIN_PANEL: false,
 } as const;

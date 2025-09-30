@@ -25,9 +25,10 @@ export type FormType = z.infer<typeof schema>;
 
 export type LoginFormProps = {
   onSubmit?: SubmitHandler<FormType>;
+  onRegister?: () => void;
 };
 
-export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
+export const LoginForm = ({ onSubmit = () => {}, onRegister }: LoginFormProps) => {
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
@@ -77,7 +78,22 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
           testID="login-button"
           label="Login"
           onPress={handleSubmit(onSubmit)}
+          className="mb-4"
         />
+        
+        {onRegister && (
+          <View className="items-center">
+            <Text className="text-gray-600 dark:text-gray-400 mb-2">
+              Don't have an account?
+            </Text>
+            <Button
+              testID="register-button"
+              label="Create Account"
+              onPress={onRegister}
+              variant="outline"
+            />
+          </View>
+        )}
       </View>
     </KeyboardAvoidingView>
   );
