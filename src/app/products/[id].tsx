@@ -15,12 +15,14 @@ import {
 } from '@/api/products';
 import type { Product } from '@/types';
 
-import { ProductImageGallery } from '../../components/products/product-image-gallery';
-import { ProductInfo } from '../../components/products/product-info';
-import { ProductPurchaseOptions } from '../../components/products/product-purchase-options';
-import { ProductNutritionFacts } from '../../components/products/product-nutrition-facts';
-import { ProductFarmInfo } from '../../components/products/product-farm-info';
-import { ProductReviews } from '../../components/products/product-reviews';
+import { 
+  ProductImageGallery,
+  ProductInfo,
+  ProductPurchaseOptions,
+  ProductNutritionFacts,
+  ProductFarmInfo,
+  ProductReviews,
+} from '@/components/products';
 
 // Custom hooks for better organization
 const useProductData = (productId: string) => {
@@ -43,10 +45,10 @@ const useProductData = (productId: string) => {
 
 const useProductActions = (product: Product | null) => {
   const router = useRouter();
-  const { isFarm, getCurrentFarm } = useAuth.use;
+  const { isFarm, farm } = useAuth.use;
   const [quantity, setQuantity] = useState(1);
 
-  const isOwner = product && isFarm() && getCurrentFarm()?.id === product.farmId;
+  const isOwner = product && isFarm() && farm()?.id === product.farmId;
 
   const handleAddToCart = useCallback(() => {
     if (!product) return;
@@ -270,7 +272,7 @@ export default function ProductDetailScreen() {
         product={product}
         onShare={handleShare}
         onEdit={handleEditProduct}
-        isOwner={isOwner}
+        isOwner={isOwner || false}
       />
 
       {/* Content */}
@@ -284,7 +286,7 @@ export default function ProductDetailScreen() {
         </View>
 
         {/* Purchase Options */}
-        {!isOwner && (
+        {!isOwner && product && (
           <View className="bg-white p-4 dark:bg-gray-800">
             <ProductPurchaseOptions
               product={product}
@@ -323,7 +325,7 @@ export default function ProductDetailScreen() {
       </ScrollView>
 
       {/* Fixed Bottom Purchase Bar (for non-owners) */}
-      {!isOwner && (
+      {!isOwner && product && (
         <View className="border-t border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
           <View className="flex-row space-x-3">
             <Button

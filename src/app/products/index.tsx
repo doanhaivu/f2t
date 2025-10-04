@@ -271,7 +271,7 @@ export default function ProductListScreen() {
       <View className="bg-white p-4 dark:bg-gray-800">
         <ProductListHeader
           totalCount={totalCount}
-          canAddProducts={canAddProducts}
+          canAddProducts={canAddProducts()}
           onAddProduct={handleAddProduct}
           layout={layout}
           onLayoutChange={setLayout}
@@ -294,7 +294,7 @@ export default function ProductListScreen() {
           onAddToCart={handleAddToCart}
           layout={layout}
           showFarmInfo={true}
-          showAddToCart={!canAddProducts} // Hide add to cart for farm users
+          showAddToCart={!canAddProducts()} // Hide add to cart for farm users
           loading={false}
           error={null}
           emptyMessage="No products found. Try adjusting your search or filters."
