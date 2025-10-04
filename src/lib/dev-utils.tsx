@@ -11,7 +11,7 @@ export class DevUtils {
    * Check if currently in development mode
    */
   static isDevelopment(): boolean {
-    return false; // Env.APP_ENV === 'development';
+    return Env.APP_ENV === 'development';
   }
 
   /**

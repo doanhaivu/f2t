@@ -11,3 +11,13 @@ export { FarmStatus } from './farm-status';
 // Farm Search Components
 export type { FarmSearchFilters, FarmSearchProps } from './farm-search';
 export { FarmSearch } from './farm-search';
+
+// Farm Management Components
+export type { FarmProfileEditFormProps } from './farm-profile-edit-form';
+export { FarmProfileEditForm } from './farm-profile-edit-form';
+export type { LocationPickerProps } from './location-picker';
+export { LocationPicker } from './location-picker';
+export type { BusinessHoursPickerProps } from './business-hours-picker';
+export { BusinessHoursPicker } from './business-hours-picker';
+export type { DeliveryZoneManagerProps } from './delivery-zone-manager';
+export { DeliveryZoneManager } from './delivery-zone-manager';

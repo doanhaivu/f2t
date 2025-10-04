@@ -52,6 +52,10 @@
 - `src/components/farms/farm-distance.tsx` - Distance calculation and delivery info component
 - `src/components/farms/index.tsx` - Farm components export file
 - `src/components/farms/farm-card.test.tsx` - Comprehensive test suite for farm card component
+- `src/components/farms/farm-profile-edit-form.tsx` - Comprehensive farm profile editing form with validation
+- `src/components/farms/location-picker.tsx` - GPS-enabled location picker with address input
+- `src/components/farms/business-hours-picker.tsx` - Interactive business hours configuration component
+- `src/components/farms/delivery-zone-manager.tsx` - Delivery zone management with radius and pricing
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -104,7 +108,7 @@
 
   - [x] 3.1 Create farm API functions (create, read, update) in `src/api/farms/index.ts`
   - [x] 3.2 Build farm profile display card component
-  - [ ] 3.3 Create farm profile edit form with location picker
+  - [x] 3.3 Create farm profile edit form with location picker
   - [ ] 3.4 Implement farm profile screen at `src/app/farms/[id].tsx`
   - [ ] 3.5 Add farm discovery list for consumers
   - [ ] 3.6 Create farm dashboard for managing products and orders
