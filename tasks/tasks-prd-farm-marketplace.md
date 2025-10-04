@@ -60,8 +60,18 @@
 - `src/app/farms/[id]/products.tsx` - Farm products listing screen with search and cart functionality
 - `src/app/farms/index.tsx` - Farm discovery screen with search, filters, and location services
 - `src/app/(app)/farms.tsx` - Farms tab redirect to discovery screen
+- `src/app/(app)/dashboard.tsx` - Farm dashboard screen with route protection
 - `src/components/ui/icons/farm.tsx` - Farm icon for navigation
+- `src/components/ui/icons/dashboard.tsx` - Dashboard icon for navigation
 - `src/components/farm-discovery-screen.test.tsx` - Test suite for farm discovery functionality
+- `src/components/dashboard/farm-dashboard.tsx` - Main farm dashboard component with comprehensive management features
+- `src/components/dashboard/dashboard-header.tsx` - Dashboard header with farm info and status
+- `src/components/dashboard/quick-actions.tsx` - Quick action buttons for common tasks
+- `src/components/dashboard/quick-stats.tsx` - Analytics and statistics display
+- `src/components/dashboard/recent-orders.tsx` - Recent orders management section
+- `src/components/dashboard/product-management.tsx` - Product inventory management section
+- `src/components/dashboard/index.tsx` - Dashboard components export file
+- `src/components/dashboard/farm-dashboard.test.tsx` - Test suite for dashboard functionality
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -117,7 +127,7 @@
   - [x] 3.3 Create farm profile edit form with location picker
   - [x] 3.4 Implement farm profile screen at `src/app/farms/[id].tsx`
   - [x] 3.5 Add farm discovery list for consumers
-  - [ ] 3.6 Create farm dashboard for managing products and orders
+  - [x] 3.6 Create farm dashboard for managing products and orders
 
 - [ ] 4.0 Build Product Catalog & Management
 
