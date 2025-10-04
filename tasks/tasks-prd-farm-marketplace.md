@@ -86,6 +86,10 @@
 - `src/components/products/product-search.tsx` - Advanced product search and filtering component
 - `src/components/products/index.tsx` - Product components export file
 - `src/components/products/product-card.test.tsx` - Test suite for product card component
+- `src/components/products/product-form.tsx` - Comprehensive product creation/edit form with validation
+- `src/components/products/image-picker.tsx` - Product image picker component with camera and gallery support
+- `src/components/products/nutritional-info-form.tsx` - Nutritional information form component
+- `src/components/products/product-form.test.tsx` - Test suite for product form component
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -142,7 +146,7 @@
 
   - [x] 4.1 Create product API functions (CRUD, search, filter) in `src/api/products/index.ts`
   - [x] 4.2 Build product card component with harvest time display
-  - [ ] 4.3 Create product creation/edit form for farms
+  - [x] 4.3 Create product creation/edit form for farms
   - [ ] 4.4 Implement product list component with search functionality
   - [ ] 4.5 Build product detail screen at `src/app/products/[id].tsx`
   - [ ] 4.6 Add image upload functionality for product photos
