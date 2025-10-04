@@ -58,6 +58,10 @@
 - `src/components/farms/delivery-zone-manager.tsx` - Delivery zone management with radius and pricing
 - `src/app/farms/[id].tsx` - Dynamic farm profile screen with comprehensive farm information display
 - `src/app/farms/[id]/products.tsx` - Farm products listing screen with search and cart functionality
+- `src/app/farms/index.tsx` - Farm discovery screen with search, filters, and location services
+- `src/app/(app)/farms.tsx` - Farms tab redirect to discovery screen
+- `src/components/ui/icons/farm.tsx` - Farm icon for navigation
+- `src/components/farm-discovery-screen.test.tsx` - Test suite for farm discovery functionality
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -112,7 +116,7 @@
   - [x] 3.2 Build farm profile display card component
   - [x] 3.3 Create farm profile edit form with location picker
   - [x] 3.4 Implement farm profile screen at `src/app/farms/[id].tsx`
-  - [ ] 3.5 Add farm discovery list for consumers
+  - [x] 3.5 Add farm discovery list for consumers
   - [ ] 3.6 Create farm dashboard for managing products and orders
 
 - [ ] 4.0 Build Product Catalog & Management
