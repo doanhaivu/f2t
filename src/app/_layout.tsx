@@ -15,6 +15,9 @@ import { APIProvider } from '@/api';
 import { hydrateAuth, loadSelectedTheme } from '@/lib';
 import { useThemeConfig } from '@/lib/use-theme-config';
 
+// Import DevUtils to initialize development tools
+import '@/lib/dev-utils';
+
 export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {

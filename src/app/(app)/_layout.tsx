@@ -8,14 +8,18 @@ import {
   Settings as SettingsIcon,
   Style as StyleIcon,
 } from '@/components/ui/icons';
-import { useAuth, useIsFirstTime } from '@/lib';
+import { useAuth, useIsFirstTime, useDeveloperMode } from '@/lib';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
+  const signInBypass = useAuth.use.signInBypass();
   const [isFirstTime] = useIsFirstTime();
+  const { shouldBypassLogin } = useDeveloperMode();
+  
   const hideSplash = useCallback(async () => {
     await SplashScreen.hideAsync();
   }, []);
+  
   useEffect(() => {
     if (status !== 'idle') {
       setTimeout(() => {
@@ -24,10 +28,21 @@ export default function TabLayout() {
     }
   }, [hideSplash, status]);
 
+  // Bypass login logic for development testing
+  useEffect(() => {
+    if (shouldBypassLogin && status === 'signOut') {
+      console.log('🚀 Bypassing login for development testing');
+      // Default bypass as consumer, can change to 'farm' if need to test farm features
+      signInBypass('consumer');
+    }
+  }, [shouldBypassLogin, status, signInBypass]);
+
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
   }
-  if (status === 'signOut') {
+  
+  // If bypass login is enabled, don't redirect to login screen
+  if (status === 'signOut' && !shouldBypassLogin) {
     return <Redirect href="/login" />;
   }
   return (

@@ -83,6 +83,7 @@ const client = z.object({
   API_URL: z.string(),
   VAR_NUMBER: z.number(),
   VAR_BOOL: z.boolean(),
+  BYPASS_LOGIN: z.boolean().optional(),
 });
 
 const buildTime = z.object({
@@ -107,6 +108,7 @@ const _clientEnv = {
   API_URL: process.env.API_URL,
   VAR_NUMBER: Number(process.env.VAR_NUMBER),
   VAR_BOOL: process.env.VAR_BOOL === 'true',
+  BYPASS_LOGIN: process.env.BYPASS_LOGIN === 'true',
 };
 
 /**

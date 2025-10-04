@@ -45,6 +45,13 @@
 - `src/api/farms/use-update-business-hours.tsx` - Business hours management hook
 - `src/api/farms/use-update-delivery-zones.tsx` - Delivery zones management hook
 - `src/api/farms/use-farm-analytics.tsx` - Farm analytics and reporting hook
+- `src/components/farms/farm-card.tsx` - Comprehensive farm profile display card with multiple variants
+- `src/components/farms/farm-list.tsx` - Farm list component with pagination and search integration
+- `src/components/farms/farm-search.tsx` - Advanced farm search and filtering component
+- `src/components/farms/farm-status.tsx` - Farm status indicator showing open/closed state
+- `src/components/farms/farm-distance.tsx` - Distance calculation and delivery info component
+- `src/components/farms/index.tsx` - Farm components export file
+- `src/components/farms/farm-card.test.tsx` - Comprehensive test suite for farm card component
 - `src/components/farms/farm-card.tsx` - Farm profile display card
 - `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
 - `src/components/products/product-card.tsx` - Product listing card component
@@ -96,7 +103,7 @@
 - [ ] 3.0 Implement Farm Management System
 
   - [x] 3.1 Create farm API functions (create, read, update) in `src/api/farms/index.ts`
-  - [ ] 3.2 Build farm profile display card component
+  - [x] 3.2 Build farm profile display card component
   - [ ] 3.3 Create farm profile edit form with location picker
   - [ ] 3.4 Implement farm profile screen at `src/app/farms/[id].tsx`
   - [ ] 3.5 Add farm discovery list for consumers

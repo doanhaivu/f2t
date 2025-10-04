@@ -1,3 +1,5 @@
+import type { BusinessHours } from '@/types';
+
 // Farm API Types
 export type {
   BusinessHours,
@@ -40,10 +42,7 @@ export { useUpdateDeliveryZones } from './use-update-delivery-zones';
  * Helper function to format business hours for display
  */
 export const formatBusinessHours = (
-  businessHours: Record<
-    string,
-    { open: string; close: string; isOpen: boolean }
-  >
+  businessHours: BusinessHours
 ): string => {
   const days = [
     'monday',
@@ -54,7 +53,7 @@ export const formatBusinessHours = (
     'saturday',
     'sunday',
   ];
-  const openDays = days.filter((day) => businessHours[day]?.isOpen);
+  const openDays = days.filter((day) => businessHours[day as keyof BusinessHours]?.isOpen);
 
   if (openDays.length === 0) return 'Closed';
   if (openDays.length === 7) return 'Open Daily';
@@ -90,10 +89,7 @@ export const formatBusinessHours = (
  * Helper function to check if farm is currently open
  */
 export const isFarmOpen = (
-  businessHours: Record<
-    string,
-    { open: string; close: string; isOpen: boolean }
-  >
+  businessHours: BusinessHours
 ): boolean => {
   const now = new Date();
   const currentDay = [
@@ -107,11 +103,11 @@ export const isFarmOpen = (
   ][now.getDay()];
   const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
 
-  const todayHours = businessHours[currentDay];
+  const todayHours = businessHours[currentDay as keyof BusinessHours];
 
   if (!todayHours?.isOpen) return false;
 
-  return currentTime >= todayHours.open && currentTime <= todayHours.close;
+  return currentTime >= todayHours.openTime && currentTime <= todayHours.closeTime;
 };
 
 /**

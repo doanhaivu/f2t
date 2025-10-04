@@ -1,3 +1,4 @@
+export * from './use-developer-mode';
 export * from './use-is-first-time';
 export { 
   useAuthPermissions, 
