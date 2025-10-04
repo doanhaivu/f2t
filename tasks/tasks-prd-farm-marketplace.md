@@ -81,11 +81,11 @@
 - `src/api/products/use-update-stock.tsx` - Hook for updating product stock
 - `src/api/products/index.tsx` - Product API exports and utility functions
 - `src/api/products/product-utils.test.ts` - Test suite for product utility functions
-- `src/components/farms/farm-card.tsx` - Farm profile display card
-- `src/components/farms/farm-profile.tsx` - Detailed farm profile screen component
-- `src/components/products/product-card.tsx` - Product listing card component
-- `src/components/products/product-form.tsx` - Product creation/edit form
-- `src/components/products/product-list.tsx` - Product listing with search/filter
+- `src/components/products/product-card.tsx` - Comprehensive product card component with harvest time display
+- `src/components/products/product-list.tsx` - Product list component with multiple layouts and loading states
+- `src/components/products/product-search.tsx` - Advanced product search and filtering component
+- `src/components/products/index.tsx` - Product components export file
+- `src/components/products/product-card.test.tsx` - Test suite for product card component
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -141,7 +141,7 @@
 - [ ] 4.0 Build Product Catalog & Management
 
   - [x] 4.1 Create product API functions (CRUD, search, filter) in `src/api/products/index.ts`
-  - [ ] 4.2 Build product card component with harvest time display
+  - [x] 4.2 Build product card component with harvest time display
   - [ ] 4.3 Create product creation/edit form for farms
   - [ ] 4.4 Implement product list component with search functionality
   - [ ] 4.5 Build product detail screen at `src/app/products/[id].tsx`
