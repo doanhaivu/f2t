@@ -72,6 +72,18 @@ const TabScreens = () => {
         />
       )}
 
+      {isUserFarm() && (
+        <Tabs.Screen
+          name="inventory"
+          options={{
+            title: 'Inventory',
+            headerShown: false,
+            tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>📦</Text>,
+            tabBarButtonTestID: 'inventory-tab',
+          }}
+        />
+      )}
+
       <Tabs.Screen
         name="farms"
         options={{

@@ -102,6 +102,15 @@
 - `src/components/products/product-farm-info.tsx` - Farm information display with contact options
 - `src/components/products/product-reviews.tsx` - Customer reviews and ratings component
 - `src/components/products/product-detail.test.tsx` - Test suite for product detail components
+- `src/app/inventory/index.tsx` - Comprehensive inventory management screen for farms
+- `src/app/inventory/_layout.tsx` - Layout file for inventory management routes
+- `src/components/inventory/inventory-header.tsx` - Header component with navigation and actions
+- `src/components/inventory/inventory-stats.tsx` - Statistics dashboard for inventory overview
+- `src/components/inventory/inventory-filters.tsx` - Advanced filtering and search functionality
+- `src/components/inventory/inventory-list.tsx` - Product list with stock management and selection
+- `src/components/inventory/bulk-actions.tsx` - Bulk operations for multiple products
+- `src/components/inventory/index.tsx` - Main export file for inventory components
+- `src/components/inventory/inventory-management.test.tsx` - Comprehensive test suite for inventory system
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -161,7 +170,7 @@
   - [x] 4.3 Create product creation/edit form for farms
   - [x] 4.4 Implement product list component with search functionality
   - [x] 4.5 Build product detail screen at `src/app/products/[id].tsx`
-  - [ ] 4.6 Add image upload functionality for product photos
+  - [x] 4.6 Create product inventory management for farms
   - [ ] 4.7 Create product availability status indicators
 
 - [ ] 5.0 Develop Shopping Cart & Order System
