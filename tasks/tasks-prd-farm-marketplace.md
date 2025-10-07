@@ -111,10 +111,15 @@
 - `src/components/inventory/bulk-actions.tsx` - Bulk operations for multiple products
 - `src/components/inventory/index.tsx` - Main export file for inventory components
 - `src/components/inventory/inventory-management.test.tsx` - Comprehensive test suite for inventory system
+- `src/lib/cart/index.tsx` - Complete cart state management with Zustand store and persistence
+- `src/lib/cart/types.tsx` - TypeScript types and interfaces for cart system
+- `src/lib/cart/utils.tsx` - Cart utility functions for calculations, validation, and formatting
+- `src/lib/cart/cart.test.tsx` - Comprehensive test suite for cart functionality
+- `src/components/cart/cart-item.tsx` - Comprehensive cart item component with quantity controls and three variants
+- `src/components/cart/index.tsx` - Cart components export file
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
-- `src/components/cart/cart-item.tsx` - Shopping cart item component
 - `src/components/cart/cart-summary.tsx` - Cart total and checkout summary
 - `src/components/orders/order-card.tsx` - Order status display component
 - `src/components/orders/order-status-timeline.tsx` - Order status progression component
@@ -175,8 +180,8 @@
 
 - [ ] 5.0 Develop Shopping Cart & Order System
 
-  - [ ] 5.1 Create cart state management with Zustand store
-  - [ ] 5.2 Build cart item component with quantity controls
+  - [x] 5.1 Create cart state management with Zustand store
+  - [x] 5.2 Build cart item component with quantity controls
   - [ ] 5.3 Implement cart summary with total calculation
   - [ ] 5.4 Create order API functions for placement and management
   - [ ] 5.5 Build checkout screen with payment integration
