@@ -116,11 +116,11 @@
 - `src/lib/cart/utils.tsx` - Cart utility functions for calculations, validation, and formatting
 - `src/lib/cart/cart.test.tsx` - Comprehensive test suite for cart functionality
 - `src/components/cart/cart-item.tsx` - Comprehensive cart item component with quantity controls and three variants
+- `src/components/cart/cart-summary.tsx` - Comprehensive cart summary component with total calculation and multiple variants
 - `src/components/cart/index.tsx` - Cart components export file
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
-- `src/components/cart/cart-summary.tsx` - Cart total and checkout summary
 - `src/components/orders/order-card.tsx` - Order status display component
 - `src/components/orders/order-status-timeline.tsx` - Order status progression component
 - `src/app/farms/[id].tsx` - Individual farm profile screen
@@ -182,7 +182,7 @@
 
   - [x] 5.1 Create cart state management with Zustand store
   - [x] 5.2 Build cart item component with quantity controls
-  - [ ] 5.3 Implement cart summary with total calculation
+  - [x] 5.3 Implement cart summary with total calculation
   - [ ] 5.4 Create order API functions for placement and management
   - [ ] 5.5 Build checkout screen with payment integration
   - [ ] 5.6 Implement order confirmation flow
