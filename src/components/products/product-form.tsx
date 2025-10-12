@@ -80,12 +80,11 @@ const BasicInfoSection = ({
         name="name"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Product Name"
+            label="Product Name *"
             placeholder="e.g., Organic Roma Tomatoes"
             value={value}
             onChangeText={onChange}
             error={errors.name?.message}
-            required
           />
         )}
       />
@@ -97,14 +96,13 @@ const BasicInfoSection = ({
         name="description"
         render={({ field: { onChange, value } }) => (
           <Input
-            label="Description"
+            label="Description *"
             placeholder="Describe your product, growing methods, taste, etc."
             value={value}
             onChangeText={onChange}
             error={errors.description?.message}
             multiline
             numberOfLines={4}
-            required
           />
         )}
       />
@@ -117,7 +115,7 @@ const BasicInfoSection = ({
           name="category"
           render={({ field: { onChange, value } }) => (
             <Select
-              label="Category"
+              label="Category *"
               value={value}
               onSelect={onChange}
               options={Object.values(PRODUCT_CATEGORIES).map(category => ({
@@ -126,7 +124,6 @@ const BasicInfoSection = ({
               }))}
               placeholder="Select category"
               error={errors.category?.message}
-              required
             />
           )}
         />
@@ -180,13 +177,12 @@ const PricingSection = ({
             name="pricePerUnit"
             render={({ field: { onChange, value } }) => (
               <Input
-                label="Price per Unit"
+                label="Price per Unit *"
                 placeholder="0.00"
                 value={value?.toString()}
                 onChangeText={(text) => onChange(parseFloat(text) || 0)}
                 keyboardType="decimal-pad"
                 error={errors.pricePerUnit?.message}
-                required
               />
             )}
           />
@@ -198,13 +194,12 @@ const PricingSection = ({
             name="unit"
             render={({ field: { onChange, value } }) => (
               <Select
-                label="Unit"
+                label="Unit *"
                 value={value}
                 onSelect={onChange}
                 options={unitOptions}
                 placeholder="Select unit"
                 error={errors.unit?.message}
-                required
               />
             )}
           />
@@ -218,13 +213,12 @@ const PricingSection = ({
             name="availableQuantity"
             render={({ field: { onChange, value } }) => (
               <Input
-                label="Available Quantity"
+                label="Available Quantity *"
                 placeholder="0"
                 value={value?.toString()}
                 onChangeText={(text) => onChange(parseInt(text) || 0)}
                 keyboardType="numeric"
                 error={errors.availableQuantity?.message}
-                required
               />
             )}
           />
@@ -236,13 +230,12 @@ const PricingSection = ({
             name="minimumOrder"
             render={({ field: { onChange, value } }) => (
               <Input
-                label="Minimum Order"
+                label="Minimum Order *"
                 placeholder="1"
                 value={value?.toString()}
                 onChangeText={(text) => onChange(parseInt(text) || 1)}
                 keyboardType="numeric"
                 error={errors.minimumOrder?.message}
-                required
               />
             )}
           />
@@ -271,12 +264,11 @@ const DatesSection = ({
           name="harvestDate"
           render={({ field: { onChange, value } }) => (
             <Input
-              label="Harvest Date"
+              label="Harvest Date *"
               placeholder="YYYY-MM-DD"
               value={value}
               onChangeText={onChange}
               error={errors.harvestDate?.message}
-              required
             />
           )}
         />
@@ -293,7 +285,6 @@ const DatesSection = ({
               value={value}
               onChangeText={onChange}
               error={errors.deliveryDate?.message}
-              required
             />
           )}
         />
@@ -312,7 +303,6 @@ const DatesSection = ({
             onChangeText={(text) => onChange(parseInt(text) || 1)}
             keyboardType="numeric"
             error={errors.estimatedShelfLife?.message}
-            required
           />
         )}
       />
@@ -623,7 +613,7 @@ export const ProductForm = ({
       farmingMethods: product.farmingMethods,
       qualityGrade: product.qualityGrade,
       freshnessLevel: product.freshnessLevel,
-      seasonalAvailability: product.seasonalAvailability,
+      seasonalAvailability: product.seasonalAvailability || [],
       storageRequirements: product.storageRequirements,
       packagingType: product.packagingType,
       tags: product.tags,
@@ -653,6 +643,10 @@ export const ProductForm = ({
         const result = await updateProductMutation.mutateAsync({
           id: product.id,
           ...formData,
+          seasonalAvailability: {
+            startMonth: 1,
+            endMonth: 12
+          },
         });
         if (result.success && onSuccess) {
           onSuccess(result.data);
@@ -661,6 +655,14 @@ export const ProductForm = ({
         const result = await createProductMutation.mutateAsync({
           farmId,
           ...formData,
+          price: formData.pricePerUnit,
+          stockQuantity: formData.availableQuantity,
+          organicCertified: formData.isOrganic,
+          isActive: true,
+          seasonalAvailability: {
+            startMonth: 1,
+            endMonth: 12
+          },
         });
         if (result.success && onSuccess) {
           onSuccess(result.data);

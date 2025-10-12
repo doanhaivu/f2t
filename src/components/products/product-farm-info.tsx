@@ -59,7 +59,7 @@ export const ProductFarmInfo = ({ farmId, onViewFarm, onContactFarm }: ProductFa
             </Text>
             {farm.location?.address && (
               <Text className="mt-1 text-gray-600 dark:text-gray-400">
-                📍 {farm.location.address}
+                📍 {farm.location.address.formattedAddress || `${farm.location.address.street}, ${farm.location.address.city}, ${farm.location.address.state}`}
               </Text>
             )}
           </View>
@@ -104,26 +104,19 @@ export const ProductFarmInfo = ({ farmId, onViewFarm, onContactFarm }: ProductFa
           </View>
         </View>
 
-        {/* Certifications and farming methods */}
-        {(farm.certifications && farm.certifications.length > 0) && (
-          <View className="mb-4">
-            <Text className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Certifications
-            </Text>
-            <View className="flex-row flex-wrap gap-2">
-              {farm.certifications.map((cert, index) => (
-                <View
-                  key={index}
-                  className="rounded-full bg-green-100 px-3 py-1 dark:bg-green-900/20"
-                >
-                  <Text className="text-sm font-medium text-green-800 dark:text-green-300">
-                    {cert}
-                  </Text>
-                </View>
-              ))}
+        {/* Farm certifications - placeholder for future implementation */}
+        <View className="mb-4">
+          <Text className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Certifications
+          </Text>
+          <View className="flex-row flex-wrap gap-2">
+            <View className="rounded-full bg-green-100 px-3 py-1 dark:bg-green-900/20">
+              <Text className="text-sm font-medium text-green-800 dark:text-green-300">
+                Local Farm
+              </Text>
             </View>
           </View>
-        )}
+        </View>
 
         {/* Action buttons */}
         <View className="flex-row space-x-3">

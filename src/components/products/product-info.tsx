@@ -213,7 +213,7 @@ export const ProductInfo = ({ product, onViewFarm }: ProductInfoProps) => {
 
       {/* Product tags */}
       <View className="mb-4">
-        <ProductTags product={product} />
+        <ProductTags product={{...product, seasonalAvailability: {startMonth: 1, endMonth: 12}}} />
       </View>
 
       {/* Description */}

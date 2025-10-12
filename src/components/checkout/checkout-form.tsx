@@ -23,6 +23,7 @@ const checkoutSchema = z.object({
     state: z.string().min(1, 'Billing state is required'),
     postalCode: z.string().min(1, 'Billing postal code is required'),
     country: z.string().min(1, 'Billing country is required'),
+    phoneNumber: z.string().optional(),
   }),
   
   // Shipping address
@@ -33,6 +34,7 @@ const checkoutSchema = z.object({
     state: z.string().min(1, 'Shipping state is required'),
     postalCode: z.string().min(1, 'Shipping postal code is required'),
     country: z.string().min(1, 'Shipping country is required'),
+    phoneNumber: z.string().optional(),
   }),
   
   // Delivery preferences
