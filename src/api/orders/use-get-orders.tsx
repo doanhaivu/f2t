@@ -20,7 +20,7 @@ export const useGetOrders = createQuery<OrdersResponse, GetOrdersRequest, AxiosE
 // Get orders infinite query for pagination
 export const useGetOrdersInfinite = createInfiniteQuery<OrdersResponse, GetOrdersRequest, AxiosError>({
   queryKey: ['orders-infinite'],
-  fetcher: async ({ pageParam = 1, ...params }) =>
+  fetcher: async ({ pageParam = 1, ...params }: GetOrdersRequest & { pageParam?: number }) =>
     client({
       url: 'orders',
       method: 'GET',

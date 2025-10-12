@@ -129,6 +129,12 @@
 - `src/api/orders/use-order-stats.tsx` - Hook for fetching order analytics and statistics
 - `src/api/orders/index.tsx` - Main orders API export with comprehensive utility functions
 - `src/api/orders/order-utils.test.ts` - Comprehensive test suite for order utility functions
+- `src/app/checkout/index.tsx` - Main checkout screen with order processing and payment integration
+- `src/app/checkout/_layout.tsx` - Checkout screen layout configuration
+- `src/components/checkout/checkout-form.tsx` - Comprehensive checkout form with validation and React Hook Form
+- `src/components/checkout/payment-integration.tsx` - Payment processing component with multiple payment methods
+- `src/components/checkout/types.tsx` - TypeScript types and interfaces for checkout system
+- `src/components/checkout/index.tsx` - Checkout components export file
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -195,7 +201,7 @@
   - [x] 5.2 Build cart item component with quantity controls
   - [x] 5.3 Implement cart summary with total calculation
   - [x] 5.4 Create order API functions for placement and management
-  - [ ] 5.5 Build checkout screen with payment integration
+  - [x] 5.5 Build checkout screen with payment integration
   - [ ] 5.6 Implement order confirmation flow
   - [ ] 5.7 Add cart persistence using MMKV storage
 

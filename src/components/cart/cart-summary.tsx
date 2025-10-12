@@ -189,7 +189,7 @@ const ActionButtons = ({
           <Button
             label="Checkout"
             onPress={onCheckout}
-            variant="primary"
+            variant="default"
             size="sm"
             disabled={!isValid}
             className="flex-1"
@@ -214,7 +214,7 @@ const ActionButtons = ({
           <Button
             label="Proceed to Checkout"
             onPress={onCheckout}
-            variant="primary"
+            variant="default"
             disabled={!isValid}
             className="flex-1"
           />
