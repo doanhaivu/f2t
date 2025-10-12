@@ -99,7 +99,7 @@ const migrateCartData = (data: any): any => {
 };
 
 // Error handling for storage operations
-const safeStorageOperation = <T>(operation: () => T, fallback: T): T => {
+const safeStorageOperation = <T,>(operation: () => T, fallback: T): T => {
   try {
     return operation();
   } catch (error) {
