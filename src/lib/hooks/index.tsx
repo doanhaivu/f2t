@@ -6,3 +6,4 @@ export {
   useConsumerPermissions 
 } from './use-auth-permissions';
 export * from './use-selected-theme';
+export * from './use-location';

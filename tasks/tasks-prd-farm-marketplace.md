@@ -219,7 +219,7 @@
 
 - [ ] 6.0 Create Location & Search Features
 
-  - [ ] 6.1 Create location service hook for GPS and distance calculation
+  - [x] 6.1 Create location service hook for GPS and distance calculation
   - [ ] 6.2 Build search bar component with real-time filtering
   - [ ] 6.3 Implement filter modal for products (category, price, location)
   - [ ] 6.4 Add location-based farm discovery within 100km radius
