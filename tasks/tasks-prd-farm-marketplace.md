@@ -118,6 +118,17 @@
 - `src/components/cart/cart-item.tsx` - Comprehensive cart item component with quantity controls and three variants
 - `src/components/cart/cart-summary.tsx` - Comprehensive cart summary component with total calculation and multiple variants
 - `src/components/cart/index.tsx` - Cart components export file
+- `src/api/orders/types.tsx` - Complete TypeScript types and interfaces for order management system
+- `src/api/orders/use-create-order.tsx` - Hook for creating new orders with payment integration
+- `src/api/orders/use-get-order.tsx` - Hook for fetching single order details
+- `src/api/orders/use-get-orders.tsx` - Hooks for fetching paginated order lists with infinite scroll
+- `src/api/orders/use-update-order.tsx` - Hook for updating order information
+- `src/api/orders/use-cancel-order.tsx` - Hook for cancelling orders with refund handling
+- `src/api/orders/use-refund-order.tsx` - Hook for processing order refunds
+- `src/api/orders/use-update-order-status.tsx` - Hook for updating order status and timeline
+- `src/api/orders/use-order-stats.tsx` - Hook for fetching order analytics and statistics
+- `src/api/orders/index.tsx` - Main orders API export with comprehensive utility functions
+- `src/api/orders/order-utils.test.ts` - Comprehensive test suite for order utility functions
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -183,7 +194,7 @@
   - [x] 5.1 Create cart state management with Zustand store
   - [x] 5.2 Build cart item component with quantity controls
   - [x] 5.3 Implement cart summary with total calculation
-  - [ ] 5.4 Create order API functions for placement and management
+  - [x] 5.4 Create order API functions for placement and management
   - [ ] 5.5 Build checkout screen with payment integration
   - [ ] 5.6 Implement order confirmation flow
   - [ ] 5.7 Add cart persistence using MMKV storage
