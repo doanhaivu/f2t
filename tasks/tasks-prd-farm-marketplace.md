@@ -135,6 +135,18 @@
 - `src/components/checkout/payment-integration.tsx` - Payment processing component with multiple payment methods
 - `src/components/checkout/types.tsx` - TypeScript types and interfaces for checkout system
 - `src/components/checkout/index.tsx` - Checkout components export file
+- `src/app/orders/[id].tsx` - Order detail screen with comprehensive order information
+- `src/app/orders/_layout.tsx` - Orders screen layout configuration
+- `src/app/checkout/success.tsx` - Order success screen with confirmation and next steps
+- `src/components/orders/order-confirmation.tsx` - Main order confirmation component with all sections
+- `src/components/orders/order-header.tsx` - Order header with number, status, and date
+- `src/components/orders/order-status-timeline.tsx` - Visual order progress timeline
+- `src/components/orders/order-items.tsx` - Order items display with product details
+- `src/components/orders/order-summary.tsx` - Order summary with pricing breakdown
+- `src/components/orders/order-actions.tsx` - Order action buttons (track, cancel, reorder)
+- `src/components/orders/order-delivery-info.tsx` - Delivery information and status
+- `src/components/orders/order-payment-info.tsx` - Payment information and billing details
+- `src/components/orders/index.tsx` - Orders components export file
 - `src/components/products/product-detail.tsx` - Product detail view
 - `src/components/search/search-bar.tsx` - Reusable search input component
 - `src/components/search/filter-modal.tsx` - Product filtering modal
@@ -202,7 +214,7 @@
   - [x] 5.3 Implement cart summary with total calculation
   - [x] 5.4 Create order API functions for placement and management
   - [x] 5.5 Build checkout screen with payment integration
-  - [ ] 5.6 Implement order confirmation flow
+  - [x] 5.6 Implement order confirmation flow
   - [ ] 5.7 Add cart persistence using MMKV storage
 
 - [ ] 6.0 Create Location & Search Features

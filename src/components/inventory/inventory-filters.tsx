@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 
 import { Button, Input, Text, View } from '@/components/ui';
 import { Select } from '@/components/ui/select';
-import { PRODUCT_CATEGORIES } from '@/types/constants';
+import { PRODUCT_CATEGORY } from '@/types/constants';
 import { getCategoryLabel } from '@/api/products';
 
 type InventoryFilters = {
@@ -23,9 +23,9 @@ type InventoryFiltersProps = {
 // Filter options
 const categoryOptions = [
   { label: 'All Categories', value: 'all' },
-  ...Object.values(PRODUCT_CATEGORIES).map(category => ({
-    label: getCategoryLabel(category),
-    value: category,
+  ...Object.entries(PRODUCT_CATEGORY).map(([key, value]) => ({
+    label: getCategoryLabel(key as keyof typeof PRODUCT_CATEGORY),
+    value: key,
   })),
 ];
 
@@ -182,7 +182,7 @@ export const InventoryFilters = ({ filters, onFiltersChange }: InventoryFiltersP
               <Select
                 options={categoryOptions}
                 value={filters.category}
-                onSelect={(value) => onFiltersChange({ category: value as string })}
+                onSelect={(value) => onFiltersChange({ category: String(value) })}
                 placeholder="Select category"
               />
             </View>

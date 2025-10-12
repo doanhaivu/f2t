@@ -99,20 +99,8 @@ const CheckoutScreen = () => {
         clearCart();
         
         // Show success message
-        Alert.alert(
-          'Order Placed Successfully!',
-          `Your order #${response.data?.order.orderNumber} has been placed and is being processed.`,
-          [
-            {
-              text: 'View Order',
-              onPress: () => router.push(`/orders/${response.data?.order.id}`),
-            },
-            {
-              text: 'Continue Shopping',
-              onPress: () => router.push('/products'),
-            },
-          ]
-        );
+        // Redirect to success screen
+        router.replace(`/checkout/success?orderId=${response.data?.order.id}`);
       }
     } catch (error) {
       console.error('Order creation failed:', error);

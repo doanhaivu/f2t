@@ -10,6 +10,13 @@ export default function CheckoutLayout() {
       }}
     >
       <Stack.Screen name="index" />
+      <Stack.Screen 
+        name="success" 
+        options={{
+          presentation: 'transparentModal',
+          animation: 'fade',
+        }}
+      />
     </Stack>
   );
 }

@@ -68,6 +68,7 @@ const InventoryItem = ({
       available: { label: 'Available', color: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300' },
       sold_out: { label: 'Sold Out', color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' },
       unavailable: { label: 'Inactive', color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300' },
+      seasonal: { label: 'Seasonal', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300' },
     };
 
     const config = statusConfig[product.status];
@@ -84,7 +85,7 @@ const InventoryItem = ({
         {/* Selection checkbox */}
         <View className="mr-3 justify-center">
           <Checkbox
-            value={isSelected}
+            checked={isSelected}
             onChange={onSelect}
             accessibilityLabel={`Select ${product.name}`}
           />
@@ -275,7 +276,7 @@ export const InventoryList = ({
       {/* Select all header */}
       <View className="flex-row items-center bg-gray-50 px-4 py-3 dark:bg-gray-800/50">
         <Checkbox
-          value={allSelected}
+          checked={allSelected}
           onChange={onSelectAll}
           accessibilityLabel="Select all products"
           className={someSelected ? 'opacity-50' : ''}

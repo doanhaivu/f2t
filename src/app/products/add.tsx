@@ -9,7 +9,7 @@ import type { Product } from '@/types';
 
 export default function AddProductScreen() {
   const router = useRouter();
-  const { getCurrentFarm } = useAuth.use;
+  const getCurrentFarm = useAuth.use.farm;
 
   const farm = getCurrentFarm();
   const farmId = farm?.id;

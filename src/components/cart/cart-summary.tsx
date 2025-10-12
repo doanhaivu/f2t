@@ -255,7 +255,7 @@ const EmptyCart = ({
       <Button
         label="Browse Products"
         onPress={onViewProducts}
-        variant="primary"
+        variant="default"
       />
     )}
   </View>

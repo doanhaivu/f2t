@@ -415,6 +415,7 @@ export const CheckoutForm = ({
               label="Same as billing address"
               checked={useSameAddress}
               onChange={setUseSameAddress}
+              accessibilityLabel="Use billing address for shipping"
             />
           </View>
           
