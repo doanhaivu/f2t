@@ -7,6 +7,12 @@ import type { Product } from '@/types';
 // MMKV storage instance for cart persistence
 const storage = new MMKV();
 
+// Storage key for cart data
+const CART_STORAGE_KEY = 'cart-storage';
+
+// Storage version for data migration
+const CART_STORAGE_VERSION = 1;
+
 // Cart item type
 export type CartItem = {
   id: string; // Unique cart item ID
@@ -71,6 +77,35 @@ const getUniqueFarms = (items: CartItem[]): string[] => {
 
 const generateCartItemId = (): string => {
   return `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
+
+// Data migration utilities
+const migrateCartData = (data: any): any => {
+  if (!data || typeof data !== 'object') {
+    return { items: [], lastUpdated: null };
+  }
+
+  // Handle old format without lastUpdated
+  if (data.state && !data.state.lastUpdated) {
+    data.state.lastUpdated = new Date().toISOString();
+  }
+
+  // Handle old format without version
+  if (!data.version) {
+    data.version = CART_STORAGE_VERSION;
+  }
+
+  return data;
+};
+
+// Error handling for storage operations
+const safeStorageOperation = <T>(operation: () => T, fallback: T): T => {
+  try {
+    return operation();
+  } catch (error) {
+    console.warn('Cart storage operation failed:', error);
+    return fallback;
+  }
 };
 
 // Helper function to update computed values
@@ -299,22 +334,39 @@ export const useCart = create<CartState>()(
       
       // Clear storage
       clearStorage: () => {
-        storage.delete('cart-storage');
+        safeStorageOperation(() => {
+          storage.delete(CART_STORAGE_KEY);
+        }, undefined);
         get().clearCart();
       },
     }),
     {
-      name: 'cart-storage',
+      name: CART_STORAGE_KEY,
+      version: CART_STORAGE_VERSION,
       storage: createJSONStorage(() => ({
         getItem: (name: string) => {
-          const value = storage.getString(name);
-          return value ?? null;
+          return safeStorageOperation(() => {
+            const value = storage.getString(name);
+            if (!value) return null;
+            
+            try {
+              const data = JSON.parse(value);
+              return JSON.stringify(migrateCartData(data));
+            } catch (error) {
+              console.warn('Failed to parse cart data, returning null:', error);
+              return null;
+            }
+          }, null);
         },
         setItem: (name: string, value: string) => {
-          storage.set(name, value);
+          safeStorageOperation(() => {
+            storage.set(name, value);
+          }, undefined);
         },
         removeItem: (name: string) => {
-          storage.delete(name);
+          safeStorageOperation(() => {
+            storage.delete(name);
+          }, undefined);
         },
       })),
       // Only persist items and lastUpdated, not UI state
@@ -322,6 +374,14 @@ export const useCart = create<CartState>()(
         items: state.items,
         lastUpdated: state.lastUpdated,
       }),
+      // Migration function for data format changes
+      migrate: (persistedState: any, version: number) => {
+        if (version === 0) {
+          // Handle migration from version 0 to 1
+          return migrateCartData(persistedState);
+        }
+        return persistedState;
+      },
     }
   )
 );
@@ -353,6 +413,53 @@ export const useCartVisibility = () => useCart((state) => ({
   closeCart: state.closeCart,
   toggleCart: state.toggleCart,
 }));
+
+// Storage management utilities
+export const useCartStorage = () => useCart((state) => ({
+  lastUpdated: state.lastUpdated,
+  clearStorage: state.clearStorage,
+  hydrate: state.hydrate,
+}));
+
+// Storage statistics and debugging utilities
+export const getCartStorageInfo = () => {
+  return safeStorageOperation(() => {
+    const keys = storage.getAllKeys();
+    const cartData = storage.getString(CART_STORAGE_KEY);
+    
+    return {
+      hasCartData: !!cartData,
+      storageKeys: keys,
+      cartDataSize: cartData ? cartData.length : 0,
+      lastModified: cartData ? new Date().toISOString() : null,
+    };
+  }, {
+    hasCartData: false,
+    storageKeys: [],
+    cartDataSize: 0,
+    lastModified: null,
+  });
+};
+
+// Clean up old cart data (useful for maintenance)
+export const cleanupCartStorage = () => {
+  return safeStorageOperation(() => {
+    const keys = storage.getAllKeys();
+    const cartKeys = keys.filter(key => key.startsWith('cart-') && key !== CART_STORAGE_KEY);
+    
+    cartKeys.forEach(key => {
+      storage.delete(key);
+    });
+    
+    return {
+      cleanedKeys: cartKeys,
+      remainingKeys: keys.filter(key => !cartKeys.includes(key)),
+    };
+  }, {
+    cleanedKeys: [],
+    remainingKeys: [],
+  });
+};
 
 // Cart persistence hook
 export const useCartPersistence = () => useCart((state) => ({
