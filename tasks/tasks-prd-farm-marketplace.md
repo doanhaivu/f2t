@@ -207,7 +207,7 @@
   - [x] 4.6 Create product inventory management for farms
   - [ ] 4.7 Create product availability status indicators
 
-- [ ] 5.0 Develop Shopping Cart & Order System
+- [x] 5.0 Develop Shopping Cart & Order System
 
   - [x] 5.1 Create cart state management with Zustand store
   - [x] 5.2 Build cart item component with quantity controls
@@ -215,7 +215,7 @@
   - [x] 5.4 Create order API functions for placement and management
   - [x] 5.5 Build checkout screen with payment integration
   - [x] 5.6 Implement order confirmation flow
-  - [ ] 5.7 Add cart persistence using MMKV storage
+  - [x] 5.7 Add cart persistence using MMKV storage
 
 - [ ] 6.0 Create Location & Search Features
 
