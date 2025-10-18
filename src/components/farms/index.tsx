@@ -11,6 +11,8 @@ export { FarmStatus } from './farm-status';
 // Farm Search Components
 export type { FarmSearchFilters, FarmSearchProps } from './farm-search';
 export { FarmSearch } from './farm-search';
+export type { FarmLocationFilterOptions } from './farm-location-filter';
+export { FarmLocationFilter } from './farm-location-filter';
 
 // Farm Management Components
 export type { FarmProfileEditFormProps } from './farm-profile-edit-form';

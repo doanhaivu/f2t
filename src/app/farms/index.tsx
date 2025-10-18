@@ -7,7 +7,9 @@ import { View, Text, Button } from '@/components/ui';
 import { 
   FarmList, 
   FarmSearch, 
-  type FarmSearchFilters 
+  FarmLocationFilter,
+  type FarmSearchFilters,
+  type FarmLocationFilterOptions 
 } from '@/components/farms';
 import { useGetFarms } from '@/api/farms';
 import { useAuth } from '@/lib/auth';
@@ -18,15 +20,19 @@ const DiscoveryHeader = ({
   farms,
   searchFilters,
   userLocation,
+  locationFilters,
+  onOpenLocationFilter,
 }: {
   farms: Farm[];
   searchFilters: FarmSearchFilters;
   userLocation: { latitude: number; longitude: number } | null;
+  locationFilters: FarmLocationFilterOptions;
+  onOpenLocationFilter: () => void;
 }) => (
   <View className="bg-white dark:bg-gray-800">
     <View className="p-4 pb-0">
       <View className="mb-4 flex-row items-center justify-between">
-        <View>
+        <View className="flex-1">
           <Text className="text-2xl font-bold text-gray-900 dark:text-white">
             Discover Farms
           </Text>
@@ -36,16 +42,37 @@ const DiscoveryHeader = ({
         </View>
         
         {userLocation && (
-          <View className="items-end">
-            <Text className="text-xs text-green-600 dark:text-green-400">
-              📍 Location enabled
-            </Text>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Showing nearby farms
-            </Text>
-          </View>
+          <Button
+            label={`${locationFilters.maxDistance}km`}
+            onPress={onOpenLocationFilter}
+            variant="outline"
+            size="sm"
+            className="ml-2"
+          />
         )}
       </View>
+
+      {/* Location Status */}
+      {userLocation && (
+        <View className="mb-3 rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-900/20">
+          <View className="flex-row items-center justify-between">
+            <View className="flex-1">
+              <Text className="text-sm font-medium text-green-800 dark:text-green-200">
+                📍 Showing farms within {locationFilters.maxDistance}km
+              </Text>
+              <Text className="text-xs text-green-700 dark:text-green-300">
+                Sorted by distance from your location
+              </Text>
+            </View>
+            <Button
+              label="Change"
+              onPress={onOpenLocationFilter}
+              variant="ghost"
+              size="sm"
+            />
+          </View>
+        </View>
+      )}
 
       {/* Stats */}
       <View className="mb-4 flex-row items-center justify-between">
@@ -190,15 +217,23 @@ const useLocationServices = () => {
 };
 
 // Hook for farm data and search
-const useFarmData = (userLocation: { latitude: number; longitude: number } | null) => {
+const useFarmData = (
+  userLocation: { latitude: number; longitude: number } | null,
+  locationFilters: FarmLocationFilterOptions
+) => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchFilters, setSearchFilters] = useState<FarmSearchFilters>({
     search: '',
     deliveryMethod: 'all',
-    sortBy: 'name',
+    sortBy: userLocation ? 'distance' : 'name',
     sortOrder: 'asc',
     isActive: true,
   });
+
+  // Determine the location to use for filtering
+  const filterLocation = locationFilters.useCurrentLocation 
+    ? userLocation 
+    : locationFilters.customLocation;
 
   const {
     data: farmsResponse,
@@ -216,11 +251,11 @@ const useFarmData = (userLocation: { latitude: number; longitude: number } | nul
       sortBy: searchFilters.sortBy,
       sortOrder: searchFilters.sortOrder,
       isActive: searchFilters.isActive,
-      ...(userLocation && searchFilters.sortBy === 'distance' && {
+      ...(filterLocation && {
         location: {
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
-          radius: 50,
+          latitude: filterLocation.latitude,
+          longitude: filterLocation.longitude,
+          radius: locationFilters.maxDistance,
         },
       }),
     },
@@ -345,6 +380,14 @@ const useFarmHandlers = (params: {
 const useFarmDiscovery = () => {
   const router = useRouter();
   const { userLocation, locationPermission, requestLocationPermission } = useLocationServices();
+  
+  // Location filter state
+  const [locationFilters, setLocationFilters] = useState<FarmLocationFilterOptions>({
+    maxDistance: 100,
+    useCurrentLocation: true,
+  });
+  const [showLocationFilter, setShowLocationFilter] = useState(false);
+  
   const {
     farms,
     searchFilters,
@@ -357,7 +400,7 @@ const useFarmDiscovery = () => {
     isFetchingNextPage,
     refreshing,
     setRefreshing,
-  } = useFarmData(userLocation);
+  } = useFarmData(userLocation, locationFilters);
 
   const handlers = useFarmHandlers({
     router,
@@ -370,17 +413,26 @@ const useFarmDiscovery = () => {
     isFetchingNextPage,
   });
 
+  const handleApplyLocationFilter = useCallback((filters: FarmLocationFilterOptions) => {
+    setLocationFilters(filters);
+    refetch();
+  }, [refetch]);
+
   return {
     farms,
     userLocation,
     locationPermission,
     searchFilters,
+    locationFilters,
+    showLocationFilter,
+    setShowLocationFilter,
     isLoading,
     error,
     refreshing,
     isFetchingNextPage,
     requestLocationPermission,
     refetch,
+    handleApplyLocationFilter,
     ...handlers,
   };
 };
@@ -391,6 +443,9 @@ type FarmDiscoveryContentProps = {
   userLocation: { latitude: number; longitude: number } | null;
   locationPermission: Location.LocationPermissionResponse | null;
   searchFilters: FarmSearchFilters;
+  locationFilters: FarmLocationFilterOptions;
+  showLocationFilter: boolean;
+  setShowLocationFilter: (show: boolean) => void;
   isLoading: boolean;
   refreshing: boolean;
   isFetchingNextPage: boolean;
@@ -399,6 +454,7 @@ type FarmDiscoveryContentProps = {
   handleSearch: () => void;
   handleClearFilters: () => void;
   handleFiltersChange: (filters: FarmSearchFilters) => void;
+  handleApplyLocationFilter: (filters: FarmLocationFilterOptions) => void;
   handleFarmPress: (farm: Farm) => void;
   handleViewProducts: (farm: Farm) => void;
   handleContactFarm: (farm: Farm) => void;
@@ -447,6 +503,8 @@ const FarmDiscoveryContent = (props: FarmDiscoveryContentProps) => (
       farms={props.farms}
       searchFilters={props.searchFilters}
       userLocation={props.userLocation}
+      locationFilters={props.locationFilters}
+      onOpenLocationFilter={() => props.setShowLocationFilter(true)}
     />
     
     <SearchSection
@@ -487,6 +545,14 @@ const FarmDiscoveryContent = (props: FarmDiscoveryContentProps) => (
         </Text>
       </View>
     )}
+
+    {/* Location Filter Modal */}
+    <FarmLocationFilter
+      visible={props.showLocationFilter}
+      onClose={() => props.setShowLocationFilter(false)}
+      onApply={props.handleApplyLocationFilter}
+      initialFilters={props.locationFilters}
+    />
   </View>
 );
 
