@@ -10,3 +10,6 @@ export * from './product-purchase-options';
 export * from './product-nutrition-facts';
 export * from './product-farm-info';
 export * from './product-reviews';
+export * from './product-status-badge';
+export * from './product-availability-indicator';
+export * from './product-stock-indicator';

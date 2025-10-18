@@ -197,7 +197,7 @@
   - [x] 3.5 Add farm discovery list for consumers
   - [x] 3.6 Create farm dashboard for managing products and orders
 
-- [ ] 4.0 Build Product Catalog & Management
+- [x] 4.0 Build Product Catalog & Management
 
   - [x] 4.1 Create product API functions (CRUD, search, filter) in `src/api/products/index.ts`
   - [x] 4.2 Build product card component with harvest time display
@@ -205,7 +205,7 @@
   - [x] 4.4 Implement product list component with search functionality
   - [x] 4.5 Build product detail screen at `src/app/products/[id].tsx`
   - [x] 4.6 Create product inventory management for farms
-  - [ ] 4.7 Create product availability status indicators
+  - [x] 4.7 Create product availability status indicators
 
 - [x] 5.0 Develop Shopping Cart & Order System
 
