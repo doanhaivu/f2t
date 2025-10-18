@@ -13,3 +13,4 @@ export * from './product-reviews';
 export * from './product-status-badge';
 export * from './product-availability-indicator';
 export * from './product-stock-indicator';
+export * from './product-filter-modal';
