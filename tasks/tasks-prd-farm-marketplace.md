@@ -223,7 +223,7 @@
   - [x] 6.2 Build search bar component with real-time filtering
   - [x] 6.3 Implement filter modal for products (category, price, location)
   - [x] 6.4 Add location-based farm discovery within 100km radius
-  - [ ] 6.5 Create search results screen with sorting options
+  - [x] 6.5 Create search results screen with sorting options
   - [ ] 6.6 Implement location permission handling
 
 - [ ] 7.0 Build Order Management & Status Tracking
