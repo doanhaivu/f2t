@@ -10,6 +10,9 @@ export {
   getStatusBgColor,
 } from './order-status-badge';
 
+// Export order list components
+export { OrderListItem } from './order-list-item';
+
 // Export timeline utilities
 export {
   sortTimelineEvents,
