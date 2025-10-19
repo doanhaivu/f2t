@@ -229,7 +229,7 @@
 - [ ] 7.0 Build Order Management & Status Tracking
 
   - [x] 7.1 Create order tracking API functions in `src/api/orders/index.ts`
-  - [ ] 7.2 Build order status timeline component
+  - [x] 7.2 Build order status timeline component
   - [ ] 7.3 Implement order history screen at `src/app/orders/index.tsx`
   - [ ] 7.4 Create individual order detail screen at `src/app/orders/[id].tsx`
   - [ ] 7.5 Build farm order management interface

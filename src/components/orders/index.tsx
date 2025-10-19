@@ -1,8 +1,33 @@
-export { OrderConfirmation } from './order-confirmation';
-export { OrderHeader } from './order-header';
+// Export timeline components
 export { OrderStatusTimeline } from './order-status-timeline';
-export { OrderItems } from './order-items';
-export { OrderSummary } from './order-summary';
-export { OrderActions } from './order-actions';
-export { OrderDeliveryInfo } from './order-delivery-info';
-export { OrderPaymentInfo } from './order-payment-info';
+export { OrderTimelineEvent } from './order-timeline-event';
+export { 
+  OrderStatusBadge,
+  statusConfig,
+  getStatusLabel,
+  getStatusDescription,
+  getStatusColor,
+  getStatusBgColor,
+} from './order-status-badge';
+
+// Export timeline utilities
+export {
+  sortTimelineEvents,
+  filterTimelineEventsByStatus,
+  filterTimelineEventsByUpdatedBy,
+  getMostRecentEvent,
+  getFirstEvent,
+  getTimeBetweenEvents,
+  formatDuration,
+  getTimeSinceEvent,
+  isRecentEvent,
+  groupEventsByDate,
+  getEventByStatus,
+  hasStatusOccurred,
+  getUniqueStatuses,
+  getAverageTimeBetweenStatuses,
+  getExpectedNextStatus,
+  isTimelineComplete,
+  getTimelineProgress,
+  formatEventTimestamp,
+} from './timeline-utils';
