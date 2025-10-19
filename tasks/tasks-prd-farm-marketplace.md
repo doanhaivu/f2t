@@ -233,7 +233,7 @@
   - [x] 7.3 Implement order history screen at `src/app/orders/index.tsx`
   - [x] 7.4 Create individual order detail screen at `src/app/orders/[id].tsx`
   - [x] 7.5 Build farm order management interface
-  - [ ] 7.6 Add order status update functionality for farms
+  - [x] 7.6 Add order status update functionality for farms
   - [ ] 7.7 Implement order notifications (email/SMS basic)
 
 - [ ] 8.0 Implement Core Navigation & Screens

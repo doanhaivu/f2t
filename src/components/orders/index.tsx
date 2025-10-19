@@ -13,6 +13,9 @@ export {
 // Export order list components
 export { OrderListItem } from './order-list-item';
 
+// Export order management components
+export { OrderStatusUpdateModal } from './order-status-update-modal';
+
 // Export timeline utilities
 export {
   sortTimelineEvents,
