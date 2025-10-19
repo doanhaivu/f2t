@@ -13,6 +13,7 @@ export function useDeveloperMode() {
   const isDevelopment = Env.APP_ENV === 'development';
   const bypassLogin = Env.BYPASS_LOGIN === true;
   const shouldBypassLogin = isDevelopment && bypassLogin;
+  console.log('shouldBypassLogin', shouldBypassLogin);
 
   return {
     isDevelopment,

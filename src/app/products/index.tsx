@@ -1,15 +1,20 @@
-import React, { useState, useCallback } from 'react';
-import { useRouter } from 'expo-router';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { TouchableOpacity, ScrollView } from 'react-native';
+import { X } from 'lucide-react-native';
 
 import { Button, Text, View } from '@/components/ui';
 import { ProductList, ProductSearch } from '@/components/products';
 import { useGetProductsInfinite, searchProducts, filterProducts, sortProducts } from '@/api/products';
 import { useAuth } from '@/lib/auth';
+import { useCart } from '@/lib/cart';
 import type { ProductSearchFilters } from '@/api/products';
 import type { Product } from '@/types';
 
 // Custom hooks for better organization
 const useProductFilters = () => {
+  const params = useLocalSearchParams();
+  
   const [filters, setFilters] = useState<ProductSearchFilters>({
     search: '',
     category: 'all',
@@ -21,11 +26,45 @@ const useProductFilters = () => {
     sortOrder: 'asc',
   });
 
+  // Initialize filters from URL params
+  useEffect(() => {
+    const initialFilters: ProductSearchFilters = {
+      search: (params.search as string) || '',
+      category: (params.category as string) || 'all',
+      priceRange: { min: 0, max: 1000 },
+      organicOnly: params.organic === 'true',
+      inSeason: params.inSeason === 'true',
+      inStock: params.inStock !== 'false',
+      sortBy: (params.sortBy as any) || 'name',
+      sortOrder: (params.sortOrder as 'asc' | 'desc') || 'asc',
+    };
+    setFilters(initialFilters);
+  }, [params]);
+
   const updateFilters = useCallback((newFilters: ProductSearchFilters) => {
     setFilters(newFilters);
   }, []);
 
-  return { filters, updateFilters };
+  const clearFilter = useCallback((filterKey: keyof ProductSearchFilters) => {
+    setFilters(prev => {
+      const updated = { ...prev };
+      if (filterKey === 'search') updated.search = '';
+      else if (filterKey === 'category') updated.category = 'all';
+      else if (filterKey === 'organicOnly') updated.organicOnly = false;
+      else if (filterKey === 'inSeason') updated.inSeason = false;
+      else if (filterKey === 'priceRange') updated.priceRange = { min: 0, max: 1000 };
+      return updated;
+    });
+  }, []);
+
+  const hasActiveFilters = filters.search || 
+    filters.category !== 'all' || 
+    filters.organicOnly || 
+    filters.inSeason ||
+    filters.priceRange.min > 0 ||
+    filters.priceRange.max < 1000;
+
+  return { filters, updateFilters, clearFilter, hasActiveFilters };
 };
 
 const useProductData = (filters: ProductSearchFilters) => {
@@ -89,15 +128,16 @@ const useProductData = (filters: ProductSearchFilters) => {
 const useProductActions = () => {
   const router = useRouter();
   const isFarm = useAuth.use.isFarm();
+  const cart = useCart();
 
   const handleProductPress = useCallback((product: Product) => {
     router.push(`/products/${product.id}`);
   }, [router]);
 
   const handleAddToCart = useCallback((product: Product) => {
-    // TODO: Implement add to cart functionality
-    console.log('Add to cart:', product.name);
-  }, []);
+    cart.addItem(product, 1);
+    // Show a toast or feedback (can be enhanced later)
+  }, [cart]);
 
   const handleAddProduct = useCallback(() => {
     router.push('/products/add');
@@ -114,6 +154,72 @@ const useProductActions = () => {
     handleEditProduct,
     canAddProducts: isFarm,
   };
+};
+
+// Active Filters Chips Component
+const ActiveFiltersChips = ({
+  filters,
+  onClearFilter,
+  onClearAll,
+}: {
+  filters: ProductSearchFilters;
+  onClearFilter: (key: keyof ProductSearchFilters) => void;
+  onClearAll: () => void;
+}) => {
+  const activeFilters: Array<{ key: keyof ProductSearchFilters; label: string }> = [];
+
+  if (filters.search) {
+    activeFilters.push({ key: 'search', label: `Search: "${filters.search}"` });
+  }
+  if (filters.category && filters.category !== 'all') {
+    activeFilters.push({ key: 'category', label: `Category: ${filters.category}` });
+  }
+  if (filters.organicOnly) {
+    activeFilters.push({ key: 'organicOnly', label: 'Organic Only' });
+  }
+  if (filters.inSeason) {
+    activeFilters.push({ key: 'inSeason', label: 'In Season' });
+  }
+  if (filters.priceRange.min > 0 || filters.priceRange.max < 1000) {
+    activeFilters.push({ 
+      key: 'priceRange', 
+      label: `$${filters.priceRange.min} - $${filters.priceRange.max}` 
+    });
+  }
+
+  if (activeFilters.length === 0) return null;
+
+  return (
+    <View className="bg-white px-4 py-2 dark:bg-gray-800">
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View className="flex-row items-center space-x-2">
+          <Text className="mr-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Active Filters:
+          </Text>
+          {activeFilters.map((filter) => (
+            <TouchableOpacity
+              key={filter.key}
+              onPress={() => onClearFilter(filter.key)}
+              className="mr-2 flex-row items-center rounded-full bg-green-100 px-3 py-1 dark:bg-green-900/30"
+            >
+              <Text className="mr-1 text-sm text-green-800 dark:text-green-300">
+                {filter.label}
+              </Text>
+              <X size={14} color="#166534" />
+            </TouchableOpacity>
+          ))}
+          <TouchableOpacity
+            onPress={onClearAll}
+            className="rounded-full bg-gray-200 px-3 py-1 dark:bg-gray-700"
+          >
+            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Clear All
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 // Header component
@@ -215,7 +321,7 @@ const ProductListError = ({
 // Main component
 export default function ProductListScreen() {
   const [layout, setLayout] = useState<'vertical' | 'horizontal' | 'grid'>('vertical');
-  const { filters, updateFilters } = useProductFilters();
+  const { filters, updateFilters, clearFilter, hasActiveFilters } = useProductFilters();
   const { 
     products, 
     isLoading, 
@@ -235,6 +341,19 @@ export default function ProductListScreen() {
 
   const handleSearch = useCallback((newFilters: ProductSearchFilters) => {
     updateFilters(newFilters);
+  }, [updateFilters]);
+
+  const handleClearAllFilters = useCallback(() => {
+    updateFilters({
+      search: '',
+      category: 'all',
+      priceRange: { min: 0, max: 1000 },
+      organicOnly: false,
+      inSeason: false,
+      inStock: true,
+      sortBy: 'name',
+      sortOrder: 'asc',
+    });
   }, [updateFilters]);
 
   const handleRefresh = useCallback(() => {
@@ -286,6 +405,15 @@ export default function ProductListScreen() {
         loading={isLoading || isFetchingNextPage}
       />
 
+      {/* Active Filters Chips */}
+      {hasActiveFilters && (
+        <ActiveFiltersChips
+          filters={filters}
+          onClearFilter={clearFilter}
+          onClearAll={handleClearAllFilters}
+        />
+      )}
+
       {/* Product List */}
       <View className="flex-1">
         <ProductList
@@ -297,7 +425,11 @@ export default function ProductListScreen() {
           showAddToCart={!canAddProducts()} // Hide add to cart for farm users
           loading={false}
           error={null}
-          emptyMessage="No products found. Try adjusting your search or filters."
+          emptyMessage={
+            hasActiveFilters
+              ? "No products match your filters. Try adjusting your search criteria."
+              : "No products available yet. Check back soon!"
+          }
           onRefresh={handleRefresh}
           refreshing={false}
           onEndReached={handleLoadMore}
