@@ -158,6 +158,16 @@
 - `src/app/cart/index.tsx` - Shopping cart screen
 - `src/app/orders/index.tsx` - Order history and tracking screen
 - `src/app/orders/[id].tsx` - Individual order detail screen
+- `src/api/notifications/types.tsx` - Notification types and interfaces
+- `src/api/notifications/templates.tsx` - Email, SMS, and push notification templates
+- `src/api/notifications/index.tsx` - Notification API functions with React Query Kit hooks
+- `src/lib/notifications/notification-service.tsx` - Notification service singleton with helper functions
+- `src/lib/notifications/index.tsx` - Notification utilities export file
+- `src/components/notifications/notification-list.tsx` - Notification list component with mark as read/delete
+- `src/components/notifications/notification-preferences.tsx` - Notification preferences management component
+- `src/components/notifications/index.tsx` - Notification components export file
+- `src/app/notifications/index.tsx` - Notifications screen with list view
+- `src/app/notifications/preferences.tsx` - Notification preferences screen
 
 ### Notes
 
@@ -226,7 +236,7 @@
   - [x] 6.5 Create search results screen with sorting options
   - [x] 6.6 Implement location permission handling
 
-- [ ] 7.0 Build Order Management & Status Tracking
+- [x] 7.0 Build Order Management & Status Tracking
 
   - [x] 7.1 Create order tracking API functions in `src/api/orders/index.ts`
   - [x] 7.2 Build order status timeline component
@@ -234,7 +244,7 @@
   - [x] 7.4 Create individual order detail screen at `src/app/orders/[id].tsx`
   - [x] 7.5 Build farm order management interface
   - [x] 7.6 Add order status update functionality for farms
-  - [ ] 7.7 Implement order notifications (email/SMS basic)
+  - [x] 7.7 Implement order notifications (email/SMS basic)
 
 - [ ] 8.0 Implement Core Navigation & Screens
   - [ ] 8.1 Update main tab navigation for marketplace features
