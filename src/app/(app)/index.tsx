@@ -1,35 +1,16 @@
-import { FlashList } from '@shopify/flash-list';
 import React from 'react';
+import { Redirect } from 'expo-router';
 
-import type { Post } from '@/api';
-import { usePosts } from '@/api';
-import { Card } from '@/components/card';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { useAuth } from '@/lib/auth';
 
-export default function Feed() {
-  const { data, isPending, isError } = usePosts();
-  const renderItem = React.useCallback(
-    ({ item }: { item: Post }) => <Card {...item} />,
-    []
-  );
+export default function IndexScreen() {
+  const isFarm = useAuth.use.isFarm;
+  const isUserFarm = isFarm(); // Call the function
 
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
+  // Redirect based on user role
+  if (isUserFarm()) {
+    return <Redirect href="/dashboard" />;
   }
-  return (
-    <View className="flex-1 ">
-      <FocusAwareStatusBar />
-      <FlashList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => `item-${index}`}
-        ListEmptyComponent={<EmptyList isLoading={isPending} />}
-        estimatedItemSize={300}
-      />
-    </View>
-  );
+
+  return <Redirect href="/(app)/home" />;
 }

@@ -247,7 +247,7 @@
   - [x] 7.7 Implement order notifications (email/SMS basic)
 
 - [ ] 8.0 Implement Core Navigation & Screens
-  - [ ] 8.1 Update main tab navigation for marketplace features
+  - [x] 8.1 Update main tab navigation for marketplace features
   - [ ] 8.2 Create home screen with farm discovery and featured products
   - [ ] 8.3 Implement search/browse screen for products
   - [ ] 8.4 Add cart screen with checkout flow

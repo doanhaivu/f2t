@@ -2,15 +2,21 @@
 import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 
-import { Pressable, Text } from '@/components/ui';
+import { Pressable, Text, View } from '@/components/ui';
 import {
+  Cart as CartIcon,
   Dashboard as DashboardIcon,
   Farm as FarmIcon,
   Feed as FeedIcon,
+  Home as HomeIcon,
+  Notification as NotificationIcon,
+  Orders as OrdersIcon,
+  Products as ProductsIcon,
   Settings as SettingsIcon,
   Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuth, useIsFirstTime, useDeveloperMode } from '@/lib';
+import { useCartItemCount } from '@/lib/cart';
 
 // Hook for managing app initialization
 const useAppInitialization = () => {
@@ -43,66 +49,93 @@ const useAppInitialization = () => {
   return { status, isFirstTime, shouldBypassLogin };
 };
 
+// Cart badge component
+const CartBadge = ({ count }: { count: number }) => {
+  if (count === 0) return null;
+  
+  return (
+    <View className="absolute -right-1 -top-1 h-4 w-4 items-center justify-center rounded-full bg-red-500">
+      <Text className="text-[10px] font-bold text-white">{count > 9 ? '9+' : count}</Text>
+    </View>
+  );
+};
+
 // Tab screens configuration
 const TabScreens = () => {
-  const { isFarm } = useAuth.use;
-  const isUserFarm = isFarm();
+  const isFarm = useAuth.use.isFarm;
+  const isUserFarm = isFarm(); // Call the function
+  const cartItemCount = useCartItemCount();
 
   return (
     <>
+      {/* Home/Dashboard Tab - Different for consumer vs farm */}
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Feed',
-          tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'feed-tab',
+          title: isUserFarm() ? 'Dashboard' : 'Home',
+          headerShown: false,
+          tabBarIcon: ({ color }) => 
+            isUserFarm() ? <DashboardIcon color={color} /> : <HomeIcon color={color} />,
+          tabBarButtonTestID: 'home-tab',
         }}
       />
 
-      {isUserFarm() && (
+      {/* Products Tab - For consumers to browse, for farms to manage */}
+      <Tabs.Screen
+        name="products"
+        options={{
+          title: 'Products',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <ProductsIcon color={color} />,
+          tabBarButtonTestID: 'products-tab',
+          href: isUserFarm() ? '/inventory' : '/products',
+        }}
+      />
+
+      {/* Farms Tab - Only for consumers */}
+      {!isUserFarm() && (
         <Tabs.Screen
-          name="dashboard"
+          name="farms"
           options={{
-            title: 'Dashboard',
+            title: 'Farms',
             headerShown: false,
-            tabBarIcon: ({ color }) => <DashboardIcon color={color} />,
-            tabBarButtonTestID: 'dashboard-tab',
+            tabBarIcon: ({ color }) => <FarmIcon color={color} />,
+            tabBarButtonTestID: 'farms-tab',
           }}
         />
       )}
 
-      {isUserFarm() && (
+      {/* Cart Tab - Only for consumers */}
+      {!isUserFarm() && (
         <Tabs.Screen
-          name="inventory"
+          name="cart"
           options={{
-            title: 'Inventory',
+            title: 'Cart',
             headerShown: false,
-            tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>📦</Text>,
-            tabBarButtonTestID: 'inventory-tab',
+            tabBarIcon: ({ color }) => (
+              <View>
+                <CartIcon color={color} />
+                <CartBadge count={cartItemCount} />
+              </View>
+            ),
+            tabBarButtonTestID: 'cart-tab',
           }}
         />
       )}
 
+      {/* Orders Tab - For both consumers and farms */}
       <Tabs.Screen
-        name="farms"
+        name="orders"
         options={{
-          title: 'Farms',
+          title: 'Orders',
           headerShown: false,
-          tabBarIcon: ({ color }) => <FarmIcon color={color} />,
-          tabBarButtonTestID: 'farms-tab',
+          tabBarIcon: ({ color }) => <OrdersIcon color={color} />,
+          tabBarButtonTestID: 'orders-tab',
+          href: isUserFarm() ? '/(app)/farm/orders' : '/orders',
         }}
       />
 
-      <Tabs.Screen
-        name="style"
-        options={{
-          title: 'Style',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
-        }}
-      />
+      {/* Settings Tab - For all users */}
       <Tabs.Screen
         name="settings"
         options={{
@@ -110,6 +143,32 @@ const TabScreens = () => {
           headerShown: false,
           tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
           tabBarButtonTestID: 'settings-tab',
+        }}
+      />
+
+      {/* Hidden tabs - Keep for routing but hide from tab bar */}
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          href: null, // Hide from tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="inventory"
+        options={{
+          href: null, // Hide from tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="style"
+        options={{
+          href: null, // Hide from tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="farm"
+        options={{
+          href: null, // Hide from tab bar
         }}
       />
     </>
