@@ -231,7 +231,7 @@
   - [x] 7.1 Create order tracking API functions in `src/api/orders/index.ts`
   - [x] 7.2 Build order status timeline component
   - [x] 7.3 Implement order history screen at `src/app/orders/index.tsx`
-  - [ ] 7.4 Create individual order detail screen at `src/app/orders/[id].tsx`
+  - [x] 7.4 Create individual order detail screen at `src/app/orders/[id].tsx`
   - [ ] 7.5 Build farm order management interface
   - [ ] 7.6 Add order status update functionality for farms
   - [ ] 7.7 Implement order notifications (email/SMS basic)
