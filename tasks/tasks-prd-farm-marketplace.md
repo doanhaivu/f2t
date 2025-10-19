@@ -217,14 +217,14 @@
   - [x] 5.6 Implement order confirmation flow
   - [x] 5.7 Add cart persistence using MMKV storage
 
-- [ ] 6.0 Create Location & Search Features
+- [x] 6.0 Create Location & Search Features
 
   - [x] 6.1 Create location service hook for GPS and distance calculation
   - [x] 6.2 Build search bar component with real-time filtering
   - [x] 6.3 Implement filter modal for products (category, price, location)
   - [x] 6.4 Add location-based farm discovery within 100km radius
   - [x] 6.5 Create search results screen with sorting options
-  - [ ] 6.6 Implement location permission handling
+  - [x] 6.6 Implement location permission handling
 
 - [ ] 7.0 Build Order Management & Status Tracking
 
