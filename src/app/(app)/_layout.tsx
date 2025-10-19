@@ -135,14 +135,22 @@ const TabScreens = () => {
         }}
       />
 
-      {/* Settings Tab - For all users */}
+      {/* Profile Tab - For all users */}
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
+          tabBarButtonTestID: 'profile-tab',
+        }}
+      />
+
+      {/* Settings Tab - Hidden, accessible from profile */}
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
-          tabBarButtonTestID: 'settings-tab',
+          href: null, // Hide from tab bar
         }}
       />
 

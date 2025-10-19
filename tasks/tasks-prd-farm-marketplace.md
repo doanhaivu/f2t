@@ -252,5 +252,5 @@
   - [x] 8.3 Implement search/browse screen for products
   - [x] 8.4 Add cart screen with checkout flow
   - [x] 8.5 Create orders tracking screen
-  - [ ] 8.6 Build user profile screen with role-specific features
+  - [x] 8.6 Build user profile screen with role-specific features
   - [ ] 8.7 Add bottom navigation icons for marketplace tabs
