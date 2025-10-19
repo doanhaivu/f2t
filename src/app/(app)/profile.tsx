@@ -105,18 +105,11 @@ export default function ProfileScreen() {
             {/* Avatar and basic info */}
             <View className="items-center">
               <View className="mb-4 h-24 w-24 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-                {user?.avatar ? (
-                  <Image 
-                    source={{ uri: user.avatar }} 
-                    className="h-24 w-24 rounded-full"
-                  />
-                ) : (
-                  <User size={48} className="text-gray-500 dark:text-gray-400" />
-                )}
+                <User size={48} className="text-gray-500 dark:text-gray-400" />
               </View>
               
               <Text className="mb-1 text-2xl font-bold text-gray-900 dark:text-white">
-                {user?.name || 'User Name'}
+                {user ? `${user.firstName} ${user.lastName}` : 'User Name'}
               </Text>
               
               <View className="mb-4 rounded-full bg-blue-100 px-3 py-1 dark:bg-blue-900/20">
@@ -143,20 +136,21 @@ export default function ProfileScreen() {
                 </Text>
               </View>
               
-              {user?.phone && (
+              {user?.phoneNumber && (
                 <View className="flex-row items-center">
                   <Phone size={20} className="text-gray-500 dark:text-gray-400" />
                   <Text className="ml-3 text-gray-700 dark:text-gray-300">
-                    {user.phone}
+                    {user.phoneNumber}
                   </Text>
                 </View>
               )}
               
-              {user?.address && (
+              {user?.location?.address && (
                 <View className="flex-row items-start">
                   <MapPin size={20} className="mt-0.5 text-gray-500 dark:text-gray-400" />
                   <Text className="ml-3 flex-1 text-gray-700 dark:text-gray-300">
-                    {user.address}
+                    {user.location.address.formattedAddress || 
+                     `${user.location.address.street}, ${user.location.address.city}, ${user.location.address.state}`}
                   </Text>
                 </View>
               )}
