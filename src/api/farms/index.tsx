@@ -31,6 +31,9 @@ export { useGetFarm } from './use-get-farm';
 export { useGetFarms, useGetFarmsList } from './use-get-farms';
 export { useUpdateFarm } from './use-update-farm';
 
+// Mock Data (for development and testing)
+export { MOCK_FARMS, getMockFarms, getMockFarm } from './mock-farms';
+
 // Farm Management Operations
 export { useFarmAnalytics } from './use-farm-analytics';
 export { useUpdateBusinessHours } from './use-update-business-hours';

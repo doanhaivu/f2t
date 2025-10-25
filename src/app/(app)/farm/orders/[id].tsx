@@ -6,7 +6,7 @@ import { ArrowLeft, Phone, Mail, MapPin, Package, Truck, Edit, CheckCircle } fro
 import { useGetOrder, useUpdateOrderStatus } from '@/api/orders';
 import { OrderStatusBadge, OrderStatusTimeline, OrderStatusUpdateModal } from '@/components/orders';
 import { Button, FocusAwareStatusBar } from '@/components/ui';
-import { FarmRouteGuard } from '@/components/auth/route-guard';
+import { RouteGuard } from '@/components/auth/route-guard';
 import type { OrderStatus } from '@/api/orders/types';
 
 // Format currency
@@ -473,9 +473,9 @@ function FarmOrderDetailContent() {
 
 export default function FarmOrderDetailScreen() {
   return (
-    <FarmRouteGuard>
+    <RouteGuard requireFarmData={true} allowedRoles={['farm']}>
       <FarmOrderDetailContent />
-    </FarmRouteGuard>
+    </RouteGuard>
   );
 }
 

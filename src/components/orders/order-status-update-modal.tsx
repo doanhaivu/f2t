@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Check } from 'lucide-react-native';
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-import { Modal } from '@/components/ui/modal';
+import { Modal, useModal } from '@/components/ui/modal';
 import { Button } from '@/components/ui';
 import type { OrderStatus } from '@/api/orders/types';
 import { getStatusLabel, getStatusBgColor, getStatusColor } from './order-status-badge';
@@ -46,9 +47,19 @@ export function OrderStatusUpdateModal({
   onUpdateStatus,
   loading = false,
 }: OrderStatusUpdateModalProps) {
+  const { ref, present, dismiss } = useModal();
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(null);
   const [notes, setNotes] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
+
+  // Handle visibility changes
+  useEffect(() => {
+    if (visible) {
+      present();
+    } else {
+      dismiss();
+    }
+  }, [visible, present, dismiss]);
 
   // Get available status transitions
   const availableStatuses = STATUS_TRANSITIONS[currentStatus] || [];
@@ -91,6 +102,7 @@ export function OrderStatusUpdateModal({
       // Reset state
       setSelectedStatus(null);
       setNotes('');
+      dismiss();
       onClose();
       
       Alert.alert('Success', 'Order status updated successfully');
@@ -106,12 +118,17 @@ export function OrderStatusUpdateModal({
     if (!isUpdating) {
       setSelectedStatus(null);
       setNotes('');
+      dismiss();
       onClose();
     }
   };
 
   return (
-    <Modal visible={visible} onClose={handleClose}>
+    <Modal 
+      ref={ref}
+      snapPoints={['80%']}
+      onDismiss={handleClose}
+    >
       <View className="bg-white dark:bg-gray-800 rounded-t-3xl p-6 max-h-[80vh]">
         {/* Header */}
         <View className="mb-6">

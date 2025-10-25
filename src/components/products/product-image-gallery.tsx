@@ -13,7 +13,8 @@ const { width: screenWidth } = Dimensions.get('window');
 export const ProductImageGallery = ({ images, productName }: ProductImageGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  if (images.length === 0) {
+  // Handle undefined or empty images array
+  if (!images || images.length === 0) {
     return (
       <View className="h-80 items-center justify-center bg-gray-100 dark:bg-gray-700">
         <Text className="text-6xl">📦</Text>

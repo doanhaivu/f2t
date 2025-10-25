@@ -29,13 +29,13 @@ const sortOptions = [
   { label: 'Popularity', value: 'popularity' },
 ];
 
-// Price range presets
+// Price range presets (VND)
 const priceRangeOptions = [
-  { label: 'Any Price', min: 0, max: 1000 },
-  { label: 'Under $5', min: 0, max: 5 },
-  { label: '$5 - $15', min: 5, max: 15 },
-  { label: '$15 - $30', min: 15, max: 30 },
-  { label: 'Over $30', min: 30, max: 1000 },
+  { label: 'Any Price', min: 0, max: 500000 },
+  { label: 'Under 50k', min: 0, max: 50000 },
+  { label: '50k - 100k', min: 50000, max: 100000 },
+  { label: '100k - 200k', min: 100000, max: 200000 },
+  { label: 'Over 200k', min: 200000, max: 500000 },
 ];
 
 export const ProductSearch = ({
@@ -47,7 +47,7 @@ export const ProductSearch = ({
   const [filters, setFilters] = useState<ProductSearchFilters>({
     search: initialFilters.search || '',
     category: initialFilters.category || 'all',
-    priceRange: initialFilters.priceRange || { min: 0, max: 1000 },
+    priceRange: initialFilters.priceRange || { min: 0, max: 500000 }, // VND
     organicOnly: initialFilters.organicOnly || false,
     inSeason: initialFilters.inSeason || false,
     inStock: initialFilters.inStock || true,
@@ -61,11 +61,18 @@ export const ProductSearch = ({
     key: K,
     value: ProductSearchFilters[K]
   ) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    
+    // Auto-apply filter for category, sortBy, and sortOrder changes
+    if (key === 'category' || key === 'sortBy' || key === 'sortOrder') {
+      onSearch(updatedFilters);
+    }
   };
 
   const handlePriceRangeChange = (preset: { min: number; max: number }) => {
-    handleFilterChange('priceRange', preset);
+    // Update price range but don't auto-apply (user needs to click "Apply Filters")
+    setFilters(prev => ({ ...prev, priceRange: preset }));
   };
 
   const handleSearch = () => {
@@ -76,7 +83,7 @@ export const ProductSearch = ({
     const resetFilters: ProductSearchFilters = {
       search: '',
       category: 'all',
-      priceRange: { min: 0, max: 1000 },
+      priceRange: { min: 0, max: 500000 }, // VND
       organicOnly: false,
       inSeason: false,
       inStock: true,
@@ -99,7 +106,7 @@ export const ProductSearch = ({
         <Input
           placeholder="Search products..."
           value={filters.search}
-          onChangeText={(text) => handleFilterChange('search', text)}
+          onChangeText={(text) => setFilters(prev => ({ ...prev, search: text }))}
           onSubmitEditing={handleSearch}
           returnKeyType="search"
         />
@@ -188,7 +195,7 @@ export const ProductSearch = ({
           {/* Toggle Filters */}
           <View className="mb-4 flex-row flex-wrap gap-3">
             <Pressable
-              onPress={() => handleFilterChange('organicOnly', !filters.organicOnly)}
+              onPress={() => setFilters(prev => ({ ...prev, organicOnly: !prev.organicOnly }))}
               className={`rounded-full border px-3 py-2 ${
                 filters.organicOnly
                   ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
@@ -207,7 +214,7 @@ export const ProductSearch = ({
             </Pressable>
 
             <Pressable
-              onPress={() => handleFilterChange('inSeason', !filters.inSeason)}
+              onPress={() => setFilters(prev => ({ ...prev, inSeason: !prev.inSeason }))}
               className={`rounded-full border px-3 py-2 ${
                 filters.inSeason
                   ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
@@ -226,7 +233,7 @@ export const ProductSearch = ({
             </Pressable>
 
             <Pressable
-              onPress={() => handleFilterChange('inStock', !filters.inStock)}
+              onPress={() => setFilters(prev => ({ ...prev, inStock: !prev.inStock }))}
               className={`rounded-full border px-3 py-2 ${
                 filters.inStock
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'

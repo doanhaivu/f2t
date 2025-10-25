@@ -116,8 +116,7 @@ export function useLocation(): LocationService {
           'Location Permission Required',
           'Please enable location access to discover nearby farms and get accurate delivery estimates.',
           [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Settings', onPress: () => Location.openSettingsAsync() },
+            { text: 'OK', style: 'cancel' },
           ]
         );
         return false;
@@ -279,6 +278,3 @@ export function useLocation(): LocationService {
     getLocationAccuracy,
   };
 }
-
-// Export types for external use
-export type { LocationCoordinates, LocationPermission, LocationState };

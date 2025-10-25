@@ -50,7 +50,10 @@ export function OrderConfirmation({
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Order Status Timeline */}
         <View className="bg-white dark:bg-gray-800 mx-4 mt-4 rounded-lg p-4">
-          <OrderStatusTimeline order={order} />
+          <OrderStatusTimeline 
+            events={order.timeline} 
+            currentStatus={order.status}
+          />
         </View>
 
         {/* Order Items */}

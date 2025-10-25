@@ -30,6 +30,15 @@ export { useGetProducts, useGetProductsInfinite } from './use-get-products';
 export { useUpdateProduct } from './use-update-product';
 export { useUpdateStock } from './use-update-stock';
 
+// Mock Data (for development and testing)
+export { 
+  MOCK_PRODUCTS, 
+  FEATURED_PRODUCT_IDS,
+  getMockProducts, 
+  getMockProduct,
+  getFeaturedProducts 
+} from './mock-products';
+
 // Utility Functions
 export const formatPrice = (price: number, currency = 'USD'): string => {
   return new Intl.NumberFormat('en-US', {
@@ -207,13 +216,15 @@ export const filterProducts = (
     // Price range filter
     if (filters.priceRange) {
       const { min, max } = filters.priceRange;
-      if (product.price < min || product.price > max) {
+      // Fix: Use pricePerUnit instead of price
+      if (product.pricePerUnit < min || product.pricePerUnit > max) {
         return false;
       }
     }
     
     // Organic filter
-    if (filters.organicOnly && !product.organicCertified) {
+    // Fix: Use isOrganic instead of organicCertified
+    if (filters.organicOnly && !product.isOrganic) {
       return false;
     }
     
@@ -223,7 +234,8 @@ export const filterProducts = (
     }
     
     // In stock filter
-    if (filters.inStock && product.stockQuantity === 0) {
+    // Fix: Use availableQuantity instead of stockQuantity, and check status
+    if (filters.inStock && (product.availableQuantity === 0 || product.status !== 'available')) {
       return false;
     }
     

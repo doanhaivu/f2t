@@ -19,9 +19,17 @@ const CheckoutScreen = () => {
   const total = useCartTotal();
   const isEmpty = useCartIsEmpty();
   const { clearCart } = useCart();
-  const { user } = useAuth.use;
+  const user = useAuth.use.user();
   
   const createOrderMutation = useCreateOrder();
+
+  // Pre-populate form with user data if available
+  const initialData = user ? {
+    firstName: user.firstName || '',
+    lastName: user.lastName || '',
+    email: user.email || '',
+    phone: user.phoneNumber || '',
+  } : undefined;
 
   // Redirect if cart is empty
   if (isEmpty) {
@@ -134,6 +142,7 @@ const CheckoutScreen = () => {
         <CheckoutForm 
           onSubmit={handleOrderSubmit}
           isLoading={createOrderMutation.isPending}
+          initialData={initialData}
         />
       </View>
 

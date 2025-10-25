@@ -5,6 +5,7 @@ import { ScrollView, Alert, Share } from 'react-native';
 import { Button, Image, Text, View } from '@/components/ui';
 import { useGetProduct } from '@/api/products';
 import { useAuth } from '@/lib/auth';
+import { useAddToCart } from '@/lib/cart';
 import { 
   formatPrice, 
   formatPricePerUnit, 
@@ -45,21 +46,31 @@ const useProductData = (productId: string) => {
 
 const useProductActions = (product: Product | null) => {
   const router = useRouter();
-  const { isFarm, farm } = useAuth.use;
+  const isFarm = useAuth.use.isFarm();
+  const farm = useAuth.use.farm();
+  const addToCart = useAddToCart();
   const [quantity, setQuantity] = useState(1);
 
-  const isOwner = product && isFarm() && farm()?.id === product.farmId;
+  const isOwner = product && isFarm() && farm?.id === product.farmId;
 
   const handleAddToCart = useCallback(() => {
     if (!product) return;
 
-    // TODO: Implement actual add to cart functionality
-    Alert.alert(
-      'Added to Cart',
-      `${quantity} ${product.unit}${quantity > 1 ? 's' : ''} of ${product.name} added to your cart.`,
-      [{ text: 'OK' }]
-    );
-  }, [product, quantity]);
+    try {
+      addToCart(product, quantity);
+      Alert.alert(
+        'Added to Cart',
+        `${quantity} ${product.unit}${quantity > 1 ? 's' : ''} of ${product.name} added to your cart.`,
+        [{ text: 'OK' }]
+      );
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error instanceof Error ? error.message : 'Failed to add to cart',
+        [{ text: 'OK' }]
+      );
+    }
+  }, [product, quantity, addToCart]);
 
   const handleBuyNow = useCallback(() => {
     if (!product) return;
@@ -278,7 +289,7 @@ export default function ProductDetailScreen() {
       {/* Content */}
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Product Images */}
-        <ProductImageGallery images={product.images} productName={product.name} />
+        <ProductImageGallery images={product.images || []} productName={product.name} />
 
         {/* Product Information */}
         <View className="bg-white p-4 dark:bg-gray-800">

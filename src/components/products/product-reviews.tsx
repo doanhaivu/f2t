@@ -87,6 +87,11 @@ const ReviewItem = ({ review }: { review: typeof mockReviews[0] }) => (
 
 // Reviews summary component
 const ReviewsSummary = ({ reviews }: { reviews: typeof mockReviews }) => {
+  // Safely check reviews array
+  if (!reviews || reviews.length === 0) {
+    return null;
+  }
+
   const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
   const ratingCounts = [5, 4, 3, 2, 1].map(rating => 
     reviews.filter(review => review.rating === rating).length
@@ -141,14 +146,14 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
   
   // In a real app, you would fetch reviews based on productId
   const reviews = mockReviews;
-  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 2);
 
   const handleWriteReview = () => {
     // TODO: Implement write review functionality
     console.log('Write review for product:', productId);
   };
 
-  if (reviews.length === 0) {
+  // Safely check reviews array
+  if (!reviews || reviews.length === 0) {
     return (
       <View>
         <Text className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
@@ -170,6 +175,9 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
       </View>
     );
   }
+
+  // Calculate displayed reviews after safety check
+  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 2);
 
   return (
     <View>

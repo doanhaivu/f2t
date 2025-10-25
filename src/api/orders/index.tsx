@@ -8,6 +8,9 @@ export { useRefundOrder } from './use-refund-order';
 export { useUpdateOrderStatus } from './use-update-order-status';
 export { useOrderStats } from './use-order-stats';
 
+// Export mock data
+export { MOCK_ORDERS, getMockOrders, getMockOrder } from './mock-orders';
+
 // Export order tracking hooks
 export { useTrackOrder } from './use-track-order';
 export { useGetOrderTimeline } from './use-get-order-timeline';

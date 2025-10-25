@@ -1,6 +1,8 @@
-import { Redirect } from 'expo-router';
+import React from 'react';
 
-// This redirects /farms to /farms/index for the discovery screen
-export default function FarmsRedirect() {
-  return <Redirect href="/farms/" />;
+import FarmDiscoveryScreen from '@/app/farms/index';
+
+export default function FarmsTab() {
+  return <FarmDiscoveryScreen />;
 }
+

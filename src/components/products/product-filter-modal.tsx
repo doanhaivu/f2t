@@ -34,7 +34,7 @@ const DEFAULT_FILTERS: ProductFilterOptions = {
   categories: [],
   priceRange: {
     min: 0,
-    max: 1000,
+    max: 500000, // VND
   },
   organicOnly: false,
   inSeason: false,
@@ -43,13 +43,13 @@ const DEFAULT_FILTERS: ProductFilterOptions = {
   sortOrder: 'asc',
 };
 
-// Price range presets
+// Price range presets (VND)
 const PRICE_RANGES = [
-  { label: 'Under $10', min: 0, max: 10 },
-  { label: '$10 - $25', min: 10, max: 25 },
-  { label: '$25 - $50', min: 25, max: 50 },
-  { label: '$50 - $100', min: 50, max: 100 },
-  { label: 'Over $100', min: 100, max: 1000 },
+  { label: 'Under 50k', min: 0, max: 50000 },
+  { label: '50k - 100k', min: 50000, max: 100000 },
+  { label: '100k - 150k', min: 100000, max: 150000 },
+  { label: '150k - 250k', min: 150000, max: 250000 },
+  { label: 'Over 250k', min: 250000, max: 500000 },
 ];
 
 // Distance presets

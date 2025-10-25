@@ -165,6 +165,7 @@ const VerticalProductList = ({
         onAddToCart={() => onAddToCart?.(item)}
         showFarmInfo={showFarmInfo}
         showAddToCart={showAddToCart}
+        className="w-full"
       />
     )}
     contentContainerStyle={{ padding: 16 }}
@@ -202,6 +203,7 @@ const GridProductList = ({
           onAddToCart={() => onAddToCart?.(item)}
           showFarmInfo={showFarmInfo}
           showAddToCart={showAddToCart}
+          className="w-full"
         />
       </View>
     )}

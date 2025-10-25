@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import type { ProductSearchFilters } from '@/api/products/types';
 
 // We'll test the core components that make up the product listing screen
 import { ProductList, ProductSearch } from './index';
@@ -410,15 +411,15 @@ describe('Product Listing Components', () => {
   describe('Integration Tests', () => {
     it('works together for complete product listing experience', () => {
       const TestScreen = () => {
-        const [filters, setFilters] = React.useState({
+        const [filters, setFilters] = React.useState<ProductSearchFilters>({
           search: '',
           category: 'all',
           priceRange: { min: 0, max: 1000 },
           organicOnly: false,
           inSeason: false,
           inStock: true,
-          sortBy: 'name' as const,
-          sortOrder: 'asc' as const,
+          sortBy: 'name',
+          sortOrder: 'asc',
         });
 
         return (

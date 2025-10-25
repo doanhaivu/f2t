@@ -169,7 +169,7 @@ describe('OrderListItem', () => {
 
     // Should not have the yellow badge for completed payments
     const texts = UNSAFE_root.findAllByType('Text' as any);
-    const hasPendingBadge = texts.some(t => 
+    const hasPendingBadge = texts.some((t: any) => 
       t.props.children === 'pending' || 
       t.props.children === 'processing'
     );

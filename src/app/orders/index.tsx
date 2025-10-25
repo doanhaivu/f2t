@@ -13,7 +13,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 type OrderFilters = {
   search: string;
   status?: OrderStatus;
-  sortBy: OrderSortBy;
+  sortBy: 'createdAt' | 'updatedAt' | 'total' | 'status';
   sortOrder: 'asc' | 'desc';
 };
 
@@ -33,7 +33,6 @@ export default function OrderHistoryScreen() {
       sortBy: filters.sortBy,
       sortOrder: filters.sortOrder,
       status: filters.status,
-      search: filters.search || undefined,
     },
   });
 
@@ -47,10 +46,13 @@ export default function OrderHistoryScreen() {
     const stats = {
       total: orders.length,
       pending: orders.filter(o => o.status === 'pending').length,
-      processing: orders.filter(o => o.status === 'processing').length,
-      shipped: orders.filter(o => o.status === 'shipped').length,
+      confirmed: orders.filter(o => o.status === 'confirmed').length,
+      preparing: orders.filter(o => o.status === 'preparing').length,
+      ready_for_pickup: orders.filter(o => o.status === 'ready_for_pickup').length,
+      out_for_delivery: orders.filter(o => o.status === 'out_for_delivery').length,
       delivered: orders.filter(o => o.status === 'delivered').length,
       cancelled: orders.filter(o => o.status === 'cancelled').length,
+      refunded: orders.filter(o => o.status === 'refunded').length,
       totalSpent: orders.reduce((sum, o) => sum + o.total, 0),
     };
     
@@ -61,8 +63,9 @@ export default function OrderHistoryScreen() {
   const statusTabs: Array<{ label: string; value: OrderStatus | undefined; icon: any }> = [
     { label: 'All', value: undefined, icon: Package },
     { label: 'Pending', value: 'pending', icon: Clock },
-    { label: 'Processing', value: 'processing', icon: Package },
-    { label: 'Shipped', value: 'shipped', icon: Truck },
+    { label: 'Confirmed', value: 'confirmed', icon: CheckCircle },
+    { label: 'Preparing', value: 'preparing', icon: Package },
+    { label: 'Shipping', value: 'out_for_delivery', icon: Truck },
     { label: 'Delivered', value: 'delivered', icon: CheckCircle },
     { label: 'Cancelled', value: 'cancelled', icon: XCircle },
   ];
@@ -186,7 +189,7 @@ export default function OrderHistoryScreen() {
                 Active
               </Text>
               <Text className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                {orderStats.pending + orderStats.processing + orderStats.shipped}
+                {orderStats.pending + orderStats.confirmed + orderStats.preparing + orderStats.out_for_delivery}
               </Text>
             </View>
             <View className="h-12 w-px bg-gray-300 dark:bg-gray-600" />
@@ -195,7 +198,7 @@ export default function OrderHistoryScreen() {
                 Total Spent
               </Text>
               <Text className="text-xl font-bold text-green-600 dark:text-green-400">
-                ${orderStats.totalSpent.toFixed(2)}
+                {orderStats.totalSpent.toLocaleString('vi-VN')} ₫
               </Text>
             </View>
           </View>

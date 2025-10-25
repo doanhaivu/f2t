@@ -8,6 +8,7 @@ export default function ProductsLayout() {
         options={{ 
           title: 'Products',
           headerShown: false, // We'll handle the header in the component
+          headerBackVisible: false, // No back button when accessed from bottom tab
         }} 
       />
       <Stack.Screen 

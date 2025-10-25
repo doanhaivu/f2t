@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { TouchableOpacity, ScrollView } from 'react-native';
+import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
+import { TouchableOpacity, ScrollView, BackHandler } from 'react-native';
 import { X } from 'lucide-react-native';
 
 import { Button, Text, View } from '@/components/ui';
 import { ProductList, ProductSearch } from '@/components/products';
-import { useGetProductsInfinite, searchProducts, filterProducts, sortProducts } from '@/api/products';
+import { useGetProductsInfinite } from '@/api/products';
 import { useAuth } from '@/lib/auth';
-import { useCart } from '@/lib/cart';
+import { useAddToCart } from '@/lib/cart';
 import type { ProductSearchFilters } from '@/api/products';
 import type { Product } from '@/types';
 
@@ -18,7 +18,7 @@ const useProductFilters = () => {
   const [filters, setFilters] = useState<ProductSearchFilters>({
     search: '',
     category: 'all',
-    priceRange: { min: 0, max: 1000 },
+    priceRange: { min: 0, max: 500000 }, // Changed to VND (500,000 VND = ~$20 USD)
     organicOnly: false,
     inSeason: false,
     inStock: true,
@@ -28,18 +28,21 @@ const useProductFilters = () => {
 
   // Initialize filters from URL params
   useEffect(() => {
+    console.log('🔍 URL params received:', params);
     const initialFilters: ProductSearchFilters = {
       search: (params.search as string) || '',
       category: (params.category as string) || 'all',
-      priceRange: { min: 0, max: 1000 },
+      priceRange: { min: 0, max: 500000 }, // Changed to VND (500,000 VND = ~$20 USD)
       organicOnly: params.organic === 'true',
       inSeason: params.inSeason === 'true',
       inStock: params.inStock !== 'false',
       sortBy: (params.sortBy as any) || 'name',
       sortOrder: (params.sortOrder as 'asc' | 'desc') || 'asc',
     };
+    console.log('🔍 Initial filters set:', initialFilters);
     setFilters(initialFilters);
-  }, [params]);
+    // Only track specific param values instead of the entire params object
+  }, [params.search, params.category, params.organic, params.inSeason, params.inStock, params.sortBy, params.sortOrder]);
 
   const updateFilters = useCallback((newFilters: ProductSearchFilters) => {
     setFilters(newFilters);
@@ -52,7 +55,7 @@ const useProductFilters = () => {
       else if (filterKey === 'category') updated.category = 'all';
       else if (filterKey === 'organicOnly') updated.organicOnly = false;
       else if (filterKey === 'inSeason') updated.inSeason = false;
-      else if (filterKey === 'priceRange') updated.priceRange = { min: 0, max: 1000 };
+      else if (filterKey === 'priceRange') updated.priceRange = { min: 0, max: 500000 }; // VND
       return updated;
     });
   }, []);
@@ -62,12 +65,14 @@ const useProductFilters = () => {
     filters.organicOnly || 
     filters.inSeason ||
     filters.priceRange.min > 0 ||
-    filters.priceRange.max < 1000;
+    filters.priceRange.max < 500000; // VND
 
   return { filters, updateFilters, clearFilter, hasActiveFilters };
 };
 
 const useProductData = (filters: ProductSearchFilters) => {
+  console.log('🔍 useProductData filters:', filters);
+  
   const {
     data: productsResponse,
     isLoading,
@@ -90,28 +95,21 @@ const useProductData = (filters: ProductSearchFilters) => {
       limit: 20,
     },
   });
+  
+  console.log('🔍 Query variables:', {
+    category: filters.category !== 'all' ? filters.category : undefined,
+    minPrice: filters.priceRange.min,
+    maxPrice: filters.priceRange.max,
+  });
 
   // Extract and process products from paginated response
   const allProducts = productsResponse?.pages?.flatMap(page => 
     page.success ? page.data?.products || [] : []
   ) || [];
 
-  // Apply client-side filtering and sorting for additional refinement
-  let processedProducts = allProducts;
-
-  if (filters.search) {
-    processedProducts = searchProducts(processedProducts, filters.search);
-  }
-
-  processedProducts = filterProducts(processedProducts, {
-    category: filters.category !== 'all' ? filters.category : undefined,
-    priceRange: filters.priceRange,
-    organicOnly: filters.organicOnly,
-    inSeason: filters.inSeason,
-    inStock: filters.inStock,
-  });
-
-  processedProducts = sortProducts(processedProducts, filters.sortBy, filters.sortOrder);
+  // Server-side filtering already applied in getMockProducts/API
+  // No need for additional client-side filtering as it can cause conflicts
+  const processedProducts = allProducts;
 
   return {
     products: processedProducts,
@@ -128,16 +126,16 @@ const useProductData = (filters: ProductSearchFilters) => {
 const useProductActions = () => {
   const router = useRouter();
   const isFarm = useAuth.use.isFarm();
-  const cart = useCart();
+  const addToCart = useAddToCart();
 
   const handleProductPress = useCallback((product: Product) => {
     router.push(`/products/${product.id}`);
   }, [router]);
 
   const handleAddToCart = useCallback((product: Product) => {
-    cart.addItem(product, 1);
+    addToCart(product, 1);
     // Show a toast or feedback (can be enhanced later)
-  }, [cart]);
+  }, [addToCart]);
 
   const handleAddProduct = useCallback(() => {
     router.push('/products/add');
@@ -180,10 +178,10 @@ const ActiveFiltersChips = ({
   if (filters.inSeason) {
     activeFilters.push({ key: 'inSeason', label: 'In Season' });
   }
-  if (filters.priceRange.min > 0 || filters.priceRange.max < 1000) {
+  if (filters.priceRange.min > 0 || filters.priceRange.max < 500000) {
     activeFilters.push({ 
       key: 'priceRange', 
-      label: `$${filters.priceRange.min} - $${filters.priceRange.max}` 
+      label: `${filters.priceRange.min.toLocaleString()}₫ - ${filters.priceRange.max.toLocaleString()}₫` 
     });
   }
 
@@ -320,6 +318,7 @@ const ProductListError = ({
 
 // Main component
 export default function ProductListScreen() {
+  const router = useRouter();
   const [layout, setLayout] = useState<'vertical' | 'horizontal' | 'grid'>('vertical');
   const { filters, updateFilters, clearFilter, hasActiveFilters } = useProductFilters();
   const { 
@@ -339,6 +338,21 @@ export default function ProductListScreen() {
     canAddProducts 
   } = useProductActions();
 
+  // Handle Android back button - navigate to home instead of going back
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        // Navigate to home tab when back is pressed
+        router.push('/(app)');
+        return true; // Prevent default back behavior
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => subscription.remove();
+    }, [router])
+  );
+
   const handleSearch = useCallback((newFilters: ProductSearchFilters) => {
     updateFilters(newFilters);
   }, [updateFilters]);
@@ -347,7 +361,7 @@ export default function ProductListScreen() {
     updateFilters({
       search: '',
       category: 'all',
-      priceRange: { min: 0, max: 1000 },
+      priceRange: { min: 0, max: 500000 }, // Changed to VND (500,000 VND = ~$20 USD)
       organicOnly: false,
       inSeason: false,
       inStock: true,

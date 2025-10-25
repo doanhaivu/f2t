@@ -156,7 +156,7 @@ describe('OrderStatusTimeline', () => {
 
     const texts = UNSAFE_root.findAllByType('Text' as any);
     const statusTexts = texts
-      .map(t => t.props.children)
+      .map((t: any) => t.props.children)
       .filter((text: any) => 
         typeof text === 'string' && 
         ['Pending', 'Confirmed', 'Preparing', 'Out for Delivery'].includes(text)

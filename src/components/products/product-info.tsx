@@ -63,19 +63,26 @@ const ProductTags = ({ product }: { product: Product }) => {
   const tags = [];
   
   if (product.isOrganic) tags.push({ label: 'Organic', color: 'green' });
-  if (isProductInSeason(product)) tags.push({ label: 'In Season', color: 'orange' });
+  
+  // Check if product is in season (for array type)
+  const isInSeason = product.seasonalAvailability && Array.isArray(product.seasonalAvailability) && 
+    (product.seasonalAvailability.includes('year_round') || product.seasonalAvailability.length > 0);
+  if (isInSeason) tags.push({ label: 'In Season', color: 'orange' });
+  
   if (product.qualityGrade === 'premium') tags.push({ label: 'Premium', color: 'purple' });
   if (isProductFresh(product.harvestDate)) tags.push({ label: 'Fresh', color: 'blue' });
   
-  // Add farming methods
-  product.farmingMethods.forEach(method => {
-    if (method !== 'organic') { // Don't duplicate organic tag
-      tags.push({ 
-        label: method.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()), 
-        color: 'gray' 
-      });
-    }
-  });
+  // Add farming methods (safely check if array exists)
+  if (product.farmingMethods && Array.isArray(product.farmingMethods)) {
+    product.farmingMethods.forEach(method => {
+      if (method !== 'organic') { // Don't duplicate organic tag
+        tags.push({ 
+          label: method.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()), 
+          color: 'gray' 
+        });
+      }
+    });
+  }
 
   if (tags.length === 0) return null;
 
@@ -213,7 +220,7 @@ export const ProductInfo = ({ product, onViewFarm }: ProductInfoProps) => {
 
       {/* Product tags */}
       <View className="mb-4">
-        <ProductTags product={{...product, seasonalAvailability: {startMonth: 1, endMonth: 12}}} />
+        <ProductTags product={product} />
       </View>
 
       {/* Description */}

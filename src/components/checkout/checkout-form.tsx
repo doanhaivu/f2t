@@ -157,9 +157,10 @@ export const CheckoutForm = ({
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
+    mode: 'onChange', // Enable real-time validation
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -185,7 +186,7 @@ export const CheckoutForm = ({
       deliveryDate: '',
       deliveryTimeSlot: '',
       deliveryInstructions: '',
-      paymentMethod: 'credit_card',
+      paymentMethod: 'cash_on_delivery', // Changed default to most accessible
       notes: '',
       specialInstructions: '',
       discountCode: '',
@@ -667,6 +668,52 @@ export const CheckoutForm = ({
           </View>
         </View>
 
+        {/* Validation Summary */}
+        {!isValid && Object.keys(errors).length > 0 && (
+          <View className="rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
+            <Text className="mb-2 font-semibold text-yellow-800 dark:text-yellow-300">
+              ⚠️ Please complete the following required fields:
+            </Text>
+            <View className="space-y-1">
+              {errors.firstName && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • First Name
+                </Text>
+              )}
+              {errors.lastName && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Last Name
+                </Text>
+              )}
+              {errors.email && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Email Address
+                </Text>
+              )}
+              {errors.phone && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Phone Number
+                </Text>
+              )}
+              {errors.billingAddress && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Billing Address Information
+                </Text>
+              )}
+              {errors.shippingAddress && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Shipping Address Information
+                </Text>
+              )}
+              {errors.paymentMethod && (
+                <Text className="text-sm text-yellow-700 dark:text-yellow-400">
+                  • Payment Method
+                </Text>
+              )}
+            </View>
+          </View>
+        )}
+
         {/* Place Order Button */}
         <View className="py-4">
           <Button
@@ -675,6 +722,11 @@ export const CheckoutForm = ({
             disabled={isLoading || !isValid}
             className="w-full"
           />
+          {!isValid && (
+            <Text className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+              Fill in all required fields to continue
+            </Text>
+          )}
         </View>
       </View>
     </ScrollView>

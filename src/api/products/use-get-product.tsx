@@ -1,7 +1,9 @@
 import { createQuery } from 'react-query-kit';
 
 import { client } from '../common/client';
+import { USE_MOCK_DATA, simulateNetworkDelay } from '../common/config';
 import type { GetProductRequest, GetProductResponse } from './types';
+import { getMockProduct } from './mock-products';
 
 type Variables = GetProductRequest;
 type Response = GetProductResponse;
@@ -9,6 +11,15 @@ type Response = GetProductResponse;
 export const useGetProduct = createQuery<Response, Variables, Error>({
   queryKey: ['product'],
   fetcher: async (variables) => {
+    // Return mock data if enabled
+    if (USE_MOCK_DATA) {
+      // Simulate network delay
+      await simulateNetworkDelay(300);
+      
+      return getMockProduct(variables.id) as GetProductResponse;
+    }
+
+    // Real API call
     const response = await client.get(`/products/${variables.id}`);
     return response.data;
   },

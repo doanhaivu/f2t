@@ -91,7 +91,7 @@ describe('useLocation Hook', () => {
 
       const { result } = renderHook(() => useLocation());
 
-      let permissionGranted: boolean;
+      let permissionGranted: boolean = false;
       await act(async () => {
         permissionGranted = await result.current.requestPermission();
       });
@@ -108,7 +108,7 @@ describe('useLocation Hook', () => {
 
       const { result } = renderHook(() => useLocation());
 
-      let permissionGranted: boolean;
+      let permissionGranted: boolean = true;
       await act(async () => {
         permissionGranted = await result.current.requestPermission();
       });
@@ -125,7 +125,7 @@ describe('useLocation Hook', () => {
 
       const { result } = renderHook(() => useLocation());
 
-      let permissionGranted: boolean;
+      let permissionGranted: boolean = true;
       await act(async () => {
         permissionGranted = await result.current.requestPermission();
       });

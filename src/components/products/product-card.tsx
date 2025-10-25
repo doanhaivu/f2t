@@ -20,6 +20,7 @@ type ProductCardProps = {
   variant?: 'default' | 'compact' | 'detailed';
   showFarmInfo?: boolean;
   showAddToCart?: boolean;
+  className?: string;
 };
 
 // Product status badge component
@@ -87,17 +88,24 @@ const ProductTags = ({ product }: { product: Product }) => {
   const tags = [];
   
   if (product.isOrganic) tags.push('Organic');
-  if (product.seasonalAvailability.includes('summer') || product.seasonalAvailability.includes('year_round')) {
-    tags.push('In Season');
+  
+  // Safely check seasonalAvailability
+  if (product.seasonalAvailability && Array.isArray(product.seasonalAvailability)) {
+    if (product.seasonalAvailability.includes('summer') || product.seasonalAvailability.includes('year_round')) {
+      tags.push('In Season');
+    }
   }
+  
   if (product.qualityGrade === 'premium') tags.push('Premium');
   
-  // Add farming methods
-  product.farmingMethods.forEach(method => {
-    if (method !== 'organic') { // Don't duplicate organic tag
-      tags.push(method.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()));
-    }
-  });
+  // Add farming methods - safely check if array exists
+  if (product.farmingMethods && Array.isArray(product.farmingMethods)) {
+    product.farmingMethods.forEach(method => {
+      if (method !== 'organic') { // Don't duplicate organic tag
+        tags.push(method.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()));
+      }
+    });
+  }
 
   if (tags.length === 0) return null;
 
@@ -129,15 +137,16 @@ const CompactProductCard = ({
   product, 
   onPress, 
   onAddToCart, 
-  showAddToCart = true 
+  showAddToCart = true,
+  className = ''
 }: ProductCardProps) => (
   <Pressable
     onPress={onPress}
-    className="mb-3 flex-row rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-800"
+    className={`mb-3 flex-row rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-800 ${className}`}
   >
     {/* Product Image */}
     <View className="mr-3 h-16 w-16 overflow-hidden rounded-lg">
-      {product.images.length > 0 ? (
+      {product.images && product.images.length > 0 ? (
         <Image
           source={{ uri: product.images[0] }}
           className="h-full w-full"
@@ -195,15 +204,16 @@ const DefaultProductCard = ({
   onPress, 
   onAddToCart, 
   showFarmInfo = false,
-  showAddToCart = true 
+  showAddToCart = true,
+  className = 'w-48'
 }: ProductCardProps) => (
   <Pressable
     onPress={onPress}
-    className="mb-4 w-48 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+    className={`mb-4 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 ${className}`}
   >
     {/* Product Image */}
     <View className="relative h-32 w-full overflow-hidden rounded-t-lg">
-      {product.images.length > 0 ? (
+      {product.images && product.images.length > 0 ? (
         <Image
           source={{ uri: product.images[0] }}
           className="h-full w-full"
@@ -277,16 +287,17 @@ const DetailedProductCard = ({
   onPress, 
   onAddToCart, 
   showFarmInfo = true,
-  showAddToCart = true 
+  showAddToCart = true,
+  className = ''
 }: ProductCardProps) => (
   <Pressable
     onPress={onPress}
-    className="mb-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+    className={`mb-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 ${className}`}
   >
     <View className="flex-row">
       {/* Product Image */}
       <View className="mr-4 h-24 w-24 overflow-hidden rounded-lg">
-        {product.images.length > 0 ? (
+        {product.images && product.images.length > 0 ? (
           <Image
             source={{ uri: product.images[0] }}
             className="h-full w-full"

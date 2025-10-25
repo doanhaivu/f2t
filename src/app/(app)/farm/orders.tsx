@@ -7,7 +7,7 @@ import { useGetOrders, useOrderStats } from '@/api/orders';
 import type { OrderStatus } from '@/api/orders/types';
 import { OrderListItem } from '@/components/orders/order-list-item';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { FarmRouteGuard } from '@/components/auth/route-guard';
+import { RouteGuard } from '@/components/auth/route-guard';
 
 type OrderTab = 'all' | OrderStatus;
 
@@ -34,7 +34,6 @@ function FarmOrdersContent() {
       sortBy: 'createdAt',
       sortOrder: 'desc',
       status: activeTab !== 'all' ? (activeTab as OrderStatus) : undefined,
-      search: searchQuery || undefined,
     },
   });
 
@@ -111,7 +110,7 @@ function FarmOrdersContent() {
   // Calculate statistics
   const todayRevenue = useMemo(() => {
     if (!stats) return 0;
-    return stats.todayRevenue || 0;
+    return stats.totalRevenue || 0;
   }, [stats]);
 
   const pendingOrdersCount = useMemo(() => {
@@ -270,9 +269,9 @@ function FarmOrdersContent() {
 
 export default function FarmOrdersScreen() {
   return (
-    <FarmRouteGuard>
+    <RouteGuard requireFarmData={true} allowedRoles={['farm']}>
       <FarmOrdersContent />
-    </FarmRouteGuard>
+    </RouteGuard>
   );
 }
 

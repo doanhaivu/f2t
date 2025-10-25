@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Alert, Pressable } from 'react-native';
 
 import { Button, Image, Text, View } from '@/components/ui';
-import { useCartActions } from '@/lib/cart';
+import { useUpdateCartQuantity } from '@/lib/cart';
 import { formatPrice, formatQuantity } from '@/lib/cart/utils';
 import type { CartItem } from '@/lib/cart';
 
@@ -365,7 +365,7 @@ export const CartItemComponent = ({
   variant = 'default',
   className,
 }: CartItemProps) => {
-  const { updateQuantity } = useCartActions();
+  const updateQuantity = useUpdateCartQuantity();
 
   const handleUpdateQuantity = useCallback((quantity: number) => {
     if (quantity === 0) {

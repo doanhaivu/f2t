@@ -1,7 +1,9 @@
 import { createInfiniteQuery, createQuery } from 'react-query-kit';
 
 import { client } from '../common/client';
+import { USE_MOCK_DATA, simulateNetworkDelay } from '../common/config';
 import type { GetProductsRequest, GetProductsResponse } from './types';
+import { getMockProducts } from './mock-products';
 
 type Variables = GetProductsRequest;
 type Response = GetProductsResponse;
@@ -10,6 +12,28 @@ type Response = GetProductsResponse;
 export const useGetProducts = createQuery<Response, Variables, Error>({
   queryKey: ['products'],
   fetcher: async (variables) => {
+    // Return mock data if enabled
+    if (USE_MOCK_DATA) {
+      // Simulate network delay
+      await simulateNetworkDelay(400);
+      
+      return getMockProducts({
+        page: variables.page,
+        limit: variables.limit,
+        search: variables.search,
+        category: variables.category,
+        farmId: variables.farmId,
+        minPrice: variables.minPrice,
+        maxPrice: variables.maxPrice,
+        organicOnly: variables.organicOnly,
+        inSeason: variables.inSeason,
+        inStock: variables.inStock,
+        sortBy: variables.sortBy,
+        sortOrder: variables.sortOrder,
+      }) as GetProductsResponse;
+    }
+
+    // Real API call
     const params = new URLSearchParams();
     
     if (variables.page) params.append('page', variables.page.toString());
@@ -45,6 +69,28 @@ export const useGetProductsInfinite = createInfiniteQuery<
 >({
   queryKey: ['products-infinite'],
   fetcher: async ({ pageParam = 1, ...variables }: { pageParam?: number } & Omit<Variables, 'page'>) => {
+    // Return mock data if enabled
+    if (USE_MOCK_DATA) {
+      // Simulate network delay
+      await simulateNetworkDelay(400);
+      
+      return getMockProducts({
+        page: pageParam,
+        limit: variables.limit,
+        search: variables.search,
+        category: variables.category,
+        farmId: variables.farmId,
+        minPrice: variables.minPrice,
+        maxPrice: variables.maxPrice,
+        organicOnly: variables.organicOnly,
+        inSeason: variables.inSeason,
+        inStock: variables.inStock,
+        sortBy: variables.sortBy,
+        sortOrder: variables.sortOrder,
+      }) as GetProductsResponse;
+    }
+
+    // Real API call
     const params = new URLSearchParams();
     
     params.append('page', pageParam.toString());
