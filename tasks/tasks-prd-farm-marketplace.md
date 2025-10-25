@@ -246,11 +246,11 @@
   - [x] 7.6 Add order status update functionality for farms
   - [x] 7.7 Implement order notifications (email/SMS basic)
 
-- [ ] 8.0 Implement Core Navigation & Screens
+- [x] 8.0 Implement Core Navigation & Screens
   - [x] 8.1 Update main tab navigation for marketplace features
   - [x] 8.2 Create home screen with farm discovery and featured products
   - [x] 8.3 Implement search/browse screen for products
   - [x] 8.4 Add cart screen with checkout flow
   - [x] 8.5 Create orders tracking screen
   - [x] 8.6 Build user profile screen with role-specific features
-  - [ ] 8.7 Add bottom navigation icons for marketplace tabs
+  - [x] 8.7 Add bottom navigation icons for marketplace tabs

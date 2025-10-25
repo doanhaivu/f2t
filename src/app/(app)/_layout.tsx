@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
+import { useColorScheme } from 'react-native';
 
 import { Pressable, Text, View } from '@/components/ui';
 import {
@@ -185,6 +186,8 @@ const TabScreens = () => {
 
 export default function TabLayout() {
   const { status, isFirstTime, shouldBypassLogin } = useAppInitialization();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
@@ -196,7 +199,27 @@ export default function TabLayout() {
   }
   
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: '#3B82F6', // Blue-600 for both modes
+        tabBarInactiveTintColor: isDark ? '#6B7280' : '#9CA3AF', // Gray-500 dark, Gray-400 light
+        tabBarStyle: {
+          backgroundColor: isDark ? '#1F2937' : '#FFFFFF', // Gray-800 dark, White light
+          borderTopWidth: 1,
+          borderTopColor: isDark ? '#374151' : '#E5E7EB', // Gray-700 dark, Gray-200 light
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+        tabBarItemStyle: {
+          paddingVertical: 4,
+        },
+      }}
+    >
       <TabScreens />
     </Tabs>
   );
